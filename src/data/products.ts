@@ -82,7 +82,6 @@ export const products: Product[] = [
   { id: 'sugar-1kg', name: 'Sugar', slug: 'sugar-1kg', categoryId: 'staples', unit: '1 kg', price: 42, mrp: 46, image: '/src/assets/products/sugar.jpg', rating: 4.1, inStock: true, stockQty: 70, isVegetarian: true, tags: ['essential', 'sweet'], discount: 9 },
   { id: 'tata-salt-1kg', name: 'Tata Salt', slug: 'tata-salt-1kg', categoryId: 'staples', brand: 'Tata', unit: '1 kg', price: 22, mrp: 25, image: '/src/assets/products/tata-salt.jpg', rating: 4.6, inStock: true, stockQty: 80, isVegetarian: true, tags: ['essential', 'iodized'], discount: 12 },
 
-  // Continue with more products...
   // Snacks
   { id: 'lays-chips-52g', name: 'Lays Classic Salted', slug: 'lays-chips-52g', categoryId: 'snacks', brand: 'Lays', unit: '52 g', price: 20, mrp: 25, image: '/src/assets/products/lays-chips.jpg', rating: 4.2, inStock: true, stockQty: 100, isVegetarian: true, tags: ['crispy', 'under99'], discount: 20 },
   { id: 'kurkure-90g', name: 'Kurkure Masala Munch', slug: 'kurkure-90g', categoryId: 'snacks', brand: 'Kurkure', unit: '90 g', price: 25, mrp: 30, image: '/src/assets/products/kurkure.jpg', rating: 4.3, inStock: true, stockQty: 85, isVegetarian: true, tags: ['spicy', 'under99'], discount: 17 },
@@ -90,7 +89,39 @@ export const products: Product[] = [
   { id: 'marie-gold-200g', name: 'Marie Gold Biscuits', slug: 'marie-gold-200g', categoryId: 'snacks', brand: 'Britannia', unit: '200 g', price: 25, mrp: 30, image: '/src/assets/products/marie-gold.jpg', rating: 4.4, inStock: true, stockQty: 70, isVegetarian: true, tags: ['classic', 'under99'], discount: 17 },
   { id: 'parle-g-250g', name: 'Parle-G Gold', slug: 'parle-g-250g', categoryId: 'snacks', brand: 'Parle', unit: '250 g', price: 35, mrp: 40, image: '/src/assets/products/parle-g.jpg', rating: 4.6, inStock: true, stockQty: 95, isVegetarian: true, tags: ['classic', 'under99'], discount: 13 },
   { id: 'good-day-cashew-200g', name: 'Good Day Cashew Cookies', slug: 'good-day-cashew-200g', categoryId: 'snacks', brand: 'Britannia', unit: '200 g', price: 45, mrp: 52, image: '/src/assets/products/good-day.jpg', rating: 4.5, inStock: true, stockQty: 60, isVegetarian: true, tags: ['premium', 'under99'], discount: 13 },
-  { id: 'haldirams-bhujia-200g', name: 'Haldiram\'s Bhujia', slug: 'haldirams-bhujia-200g', categoryId: 'snacks', brand: 'Haldiram\'s', unit: '200 g', price: 65, mrp: 72, image: '/src/assets/products/haldirams-bhujia.jpg', rating: 4.6, inStock: true, stockQty: 50, isVegetarian: true, tags: ['spicy', 'traditional'], discount: 10 }
+  { id: 'haldirams-bhujia-200g', name: 'Haldiram\'s Bhujia', slug: 'haldirams-bhujia-200g', categoryId: 'snacks', brand: 'Haldiram\'s', unit: '200 g', price: 65, mrp: 72, image: '/src/assets/products/haldirams-bhujia.jpg', rating: 4.6, inStock: true, stockQty: 50, isVegetarian: true, tags: ['spicy', 'traditional'], discount: 10 },
+
+  // Beverages
+  { id: 'thums-up-750ml', name: 'Thums Up', slug: 'thums-up-750ml', categoryId: 'beverages', brand: 'Thums Up', unit: '750 ml', price: 40, mrp: 45, image: '/src/assets/products/thums-up.jpg', rating: 4.3, inStock: true, stockQty: 60, isVegetarian: true, tags: ['cola', 'refreshing'], discount: 11 },
+  { id: 'coca-cola-750ml', name: 'Coca Cola', slug: 'coca-cola-750ml', categoryId: 'beverages', brand: 'Coca Cola', unit: '750 ml', price: 42, mrp: 48, image: '/src/assets/products/coca-cola.jpg', rating: 4.4, inStock: true, stockQty: 55, isVegetarian: true, tags: ['cola', 'classic'], discount: 13 },
+  { id: 'frooti-1l', name: 'Frooti Mango Drink', slug: 'frooti-1l', categoryId: 'beverages', brand: 'Frooti', unit: '1 L', price: 55, mrp: 65, image: '/src/assets/products/frooti.jpg', rating: 4.5, inStock: true, stockQty: 40, isVegetarian: true, tags: ['mango', 'fruit'], discount: 15 },
+  { id: 'tropicana-orange-1l', name: 'Tropicana Orange Juice', slug: 'tropicana-orange-1l', categoryId: 'beverages', brand: 'Tropicana', unit: '1 L', price: 180, mrp: 200, image: '/src/assets/products/tropicana-orange.jpg', rating: 4.6, inStock: true, stockQty: 30, isVegetarian: true, tags: ['premium', 'vitamin-c'], discount: 10 },
+  { id: 'nescafe-classic-50g', name: 'Nescafé Classic', slug: 'nescafe-classic-50g', categoryId: 'beverages', brand: 'Nescafé', unit: '50 g', price: 285, mrp: 315, image: '/src/assets/products/nescafe-classic.jpg', rating: 4.5, inStock: true, stockQty: 45, isVegetarian: true, tags: ['coffee', 'instant'], discount: 10 },
+  { id: 'red-label-tea-250g', name: 'Red Label Tea', slug: 'red-label-tea-250g', categoryId: 'beverages', brand: 'Red Label', unit: '250 g', price: 135, mrp: 150, image: '/src/assets/products/red-label-tea.jpg', rating: 4.4, inStock: true, stockQty: 50, isVegetarian: true, tags: ['tea', 'traditional'], discount: 10 },
+
+  // Breakfast & Spreads
+  { id: 'britannia-bread-400g', name: 'Britannia Bread', slug: 'britannia-bread-400g', categoryId: 'breakfast', brand: 'Britannia', unit: '400 g', price: 35, mrp: 40, image: '/src/assets/products/britannia-bread.jpg', rating: 4.2, inStock: true, stockQty: 60, isVegetarian: true, tags: ['fresh', 'daily'], discount: 13 },
+  { id: 'peanut-butter-340g', name: 'Peanut Butter', slug: 'peanut-butter-340g', categoryId: 'breakfast', unit: '340 g', price: 185, mrp: 210, image: '/src/assets/products/peanut-butter.jpg', rating: 4.3, inStock: true, stockQty: 35, isVegetarian: true, tags: ['protein', 'creamy'], discount: 12 },
+  { id: 'kissan-jam-500g', name: 'Kissan Mixed Fruit Jam', slug: 'kissan-jam-500g', categoryId: 'breakfast', brand: 'Kissan', unit: '500 g', price: 155, mrp: 175, image: '/src/assets/products/kissan-jam.jpg', rating: 4.4, inStock: true, stockQty: 40, isVegetarian: true, tags: ['sweet', 'fruity'], discount: 11 },
+  { id: 'corn-flakes-475g', name: 'Corn Flakes', slug: 'corn-flakes-475g', categoryId: 'breakfast', unit: '475 g', price: 165, mrp: 185, image: '/src/assets/products/corn-flakes.jpg', rating: 4.3, inStock: true, stockQty: 45, isVegetarian: true, tags: ['healthy', 'crunchy'], discount: 11 },
+
+  // Personal Care
+  { id: 'colgate-toothpaste-200g', name: 'Colgate Toothpaste', slug: 'colgate-toothpaste-200g', categoryId: 'personal-care', brand: 'Colgate', unit: '200 g', price: 115, mrp: 125, image: '/src/assets/products/colgate-toothpaste.jpg', rating: 4.5, inStock: true, stockQty: 70, tags: ['dental', 'fresh'], discount: 8 },
+  { id: 'dove-soap-3pack', name: 'Dove Soap', slug: 'dove-soap-3pack', categoryId: 'personal-care', brand: 'Dove', unit: '100 g (pack of 3)', price: 195, mrp: 220, image: '/src/assets/products/dove-soap.jpg', rating: 4.6, inStock: true, stockQty: 50, tags: ['moisturizing', 'gentle'], discount: 11 },
+
+  // Household
+  { id: 'surf-excel-2kg', name: 'Surf Excel Matic', slug: 'surf-excel-2kg', categoryId: 'household', brand: 'Surf Excel', unit: '2 kg', price: 385, mrp: 425, image: '/src/assets/products/surf-excel.jpg', rating: 4.4, inStock: true, stockQty: 40, tags: ['detergent', 'washing'], discount: 9 },
+  { id: 'vim-dishwash-500ml', name: 'Vim Dishwash Liquid', slug: 'vim-dishwash-500ml', categoryId: 'household', brand: 'Vim', unit: '500 ml', price: 85, mrp: 95, image: '/src/assets/products/vim-dishwash.jpg', rating: 4.3, inStock: true, stockQty: 55, tags: ['cleaning', 'kitchen'], discount: 11 },
+  { id: 'harpic-1l', name: 'Harpic', slug: 'harpic-1l', categoryId: 'household', brand: 'Harpic', unit: '1 L', price: 165, mrp: 185, image: '/src/assets/products/harpic.jpg', rating: 4.2, inStock: true, stockQty: 35, tags: ['disinfectant', 'bathroom'], discount: 11 },
+  { id: 'lizol-1l', name: 'Lizol Floor Cleaner', slug: 'lizol-1l', categoryId: 'household', brand: 'Lizol', unit: '1 L', price: 145, mrp: 165, image: '/src/assets/products/lizol.jpg', rating: 4.3, inStock: true, stockQty: 45, tags: ['floor', 'disinfectant'], discount: 12 },
+  { id: 'whisper-pads', name: 'Sanitary Pads (Whisper)', slug: 'whisper-pads', categoryId: 'personal-care', brand: 'Whisper', unit: 'pack', price: 285, mrp: 315, image: '/src/assets/products/whisper-pads.jpg', rating: 4.5, inStock: true, stockQty: 30, tags: ['feminine', 'hygiene'], discount: 10 },
+
+  // Baby Care
+  { id: 'pampers-diapers-medium', name: 'Pampers Diapers', slug: 'pampers-diapers-medium', categoryId: 'baby-care', brand: 'Pampers', unit: 'Medium (20 pcs)', price: 485, mrp: 535, image: '/src/assets/products/pampers-diapers.jpg', rating: 4.6, inStock: true, stockQty: 25, tags: ['baby', 'comfort'], discount: 9 },
+  { id: 'baby-wipes-72pcs', name: 'Baby Wipes', slug: 'baby-wipes-72pcs', categoryId: 'baby-care', unit: '72 pcs', price: 155, mrp: 175, image: '/src/assets/products/baby-wipes.jpg', rating: 4.4, inStock: true, stockQty: 40, tags: ['baby', 'gentle'], discount: 11 },
+
+  // Bakery
+  { id: 'brown-bread-400g', name: 'Brown Bread', slug: 'brown-bread-400g', categoryId: 'bakery', unit: '400 g', price: 42, mrp: 48, image: '/src/assets/products/brown-bread.jpg', rating: 4.3, inStock: true, stockQty: 35, isVegetarian: true, tags: ['healthy', 'wholegrain'], discount: 13 },
 ];
 
 export const coupons: Coupon[] = [

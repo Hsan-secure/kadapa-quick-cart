@@ -23,9 +23,9 @@ export function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80 border-b shadow-sm">
+    <header className="sticky top-0 z-50 w-full bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/90 border-b shadow-sm">
       {/* Delivery Promise Banner */}
-      <div className="gradient-brand text-white py-2">
+      <div className="bg-gradient-to-r from-primary to-secondary text-white py-2">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-center space-x-6 text-sm">
             <div className="flex items-center space-x-2">
@@ -47,13 +47,13 @@ export function Header() {
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2">
-            <div className="w-8 h-8 gradient-brand rounded-lg flex items-center justify-center text-white font-bold">
+          <Link to="/" className="flex items-center space-x-3">
+            <div className="w-8 h-8 bg-gradient-to-r from-primary to-secondary rounded-lg flex items-center justify-center text-white font-bold text-lg">
               Q
             </div>
             <div className="hidden sm:block">
-              <h1 className="text-xl font-bold text-gradient">Quick Delivery</h1>
-              <p className="text-xs text-muted-foreground">Kadapa's fastest grocery</p>
+              <h1 className="text-xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Quick Delivery</h1>
+              <p className="text-xs text-muted-foreground">30-min grocery delivery</p>
             </div>
           </Link>
 
@@ -111,12 +111,12 @@ export function Header() {
               <SheetContent side="left" className="w-80">
                 <SheetHeader>
                   <SheetTitle className="text-left">
-                    <div className="flex items-center space-x-2">
-                      <div className="w-6 h-6 gradient-brand rounded flex items-center justify-center text-white text-sm font-bold">
-                        Q
-                      </div>
-                      <span className="text-gradient font-bold">Quick Delivery</span>
+                  <div className="flex items-center space-x-3">
+                    <div className="w-6 h-6 bg-gradient-to-r from-primary to-secondary rounded flex items-center justify-center text-white text-sm font-bold">
+                      Q
                     </div>
+                    <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-bold">Quick Delivery</span>
+                  </div>
                   </SheetTitle>
                 </SheetHeader>
                 
