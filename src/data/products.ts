@@ -122,6 +122,36 @@ export const products: Product[] = [
 
   // Bakery
   { id: 'brown-bread-400g', name: 'Brown Bread', slug: 'brown-bread-400g', categoryId: 'bakery', unit: '400 g', price: 42, mrp: 48, image: '/src/assets/products/brown-bread.jpg', rating: 4.3, inStock: true, stockQty: 35, isVegetarian: true, tags: ['healthy', 'wholegrain'], discount: 13 },
+
+  // Additional Fruits & Vegetables
+  { id: 'mangoes-1kg', name: 'Fresh Mangoes', slug: 'mangoes-1kg', categoryId: 'fruits-veg', unit: '1 kg', price: 120, mrp: 140, image: '/src/assets/products/mangoes.jpg', rating: 4.6, inStock: true, stockQty: 30, isVegetarian: true, tags: ['fresh', 'sweet', 'seasonal'], discount: 14 },
+  { id: 'grapes-500g', name: 'Fresh Grapes', slug: 'grapes-500g', categoryId: 'fruits-veg', unit: '500 g', price: 85, mrp: 95, image: '/src/assets/products/grapes.jpg', rating: 4.4, inStock: true, stockQty: 40, isVegetarian: true, tags: ['fresh', 'sweet'], discount: 11 },
+  { id: 'cauliflower-1pc', name: 'Fresh Cauliflower', slug: 'cauliflower-1pc', categoryId: 'fruits-veg', unit: '1 pc', price: 32, mrp: 40, image: '/src/assets/products/cauliflower.jpg', rating: 4.2, inStock: true, stockQty: 25, isVegetarian: true, tags: ['fresh', 'under99'], discount: 20 },
+  { id: 'bell-peppers-3pcs', name: 'Bell Peppers (Capsicum)', slug: 'bell-peppers-3pcs', categoryId: 'fruits-veg', unit: '3 pcs', price: 48, mrp: 55, image: '/src/assets/products/bell-peppers.jpg', rating: 4.3, inStock: true, stockQty: 35, isVegetarian: true, tags: ['fresh', 'colorful', 'under99'], discount: 13 },
+  { id: 'ginger-200g', name: 'Fresh Ginger', slug: 'ginger-200g', categoryId: 'fruits-veg', unit: '200 g', price: 24, mrp: 30, image: '/src/assets/products/ginger.jpg', rating: 4.1, inStock: true, stockQty: 45, isVegetarian: true, tags: ['fresh', 'spice', 'under99'], discount: 20 },
+  { id: 'garlic-250g', name: 'Fresh Garlic', slug: 'garlic-250g', categoryId: 'fruits-veg', unit: '250 g', price: 35, mrp: 42, image: '/src/assets/products/garlic.jpg', rating: 4.2, inStock: true, stockQty: 50, isVegetarian: true, tags: ['fresh', 'essential', 'under99'], discount: 17 },
+
+  // Additional Dairy Products
+  { id: 'cheese-slices-200g', name: 'Amul Cheese Slices', slug: 'cheese-slices-200g', categoryId: 'dairy-eggs', brand: 'Amul', unit: '200 g', price: 140, mrp: 155, image: '/src/assets/products/cheese-slices.jpg', rating: 4.5, inStock: true, stockQty: 30, isVegetarian: true, tags: ['creamy', 'premium'], discount: 10 },
+
+  // Additional Staples
+  { id: 'basmati-rice-5kg', name: 'Basmati Rice', slug: 'basmati-rice-5kg', categoryId: 'staples', unit: '5 kg', price: 485, mrp: 525, image: '/src/assets/products/basmati-rice.jpg', rating: 4.7, inStock: true, stockQty: 25, isVegetarian: true, tags: ['premium', 'aromatic', 'bestseller'], discount: 8 },
+  { id: 'coconut-oil-500ml', name: 'Coconut Oil', slug: 'coconut-oil-500ml', categoryId: 'staples', unit: '500 ml', price: 185, mrp: 210, image: '/src/assets/products/coconut-oil.jpg', rating: 4.4, inStock: true, stockQty: 35, isVegetarian: true, tags: ['healthy', 'traditional'], discount: 12 },
+  { id: 'baking-powder-100g', name: 'Baking Powder', slug: 'baking-powder-100g', categoryId: 'staples', unit: '100 g', price: 45, mrp: 52, image: '/src/assets/products/baking-powder.jpg', rating: 4.2, inStock: true, stockQty: 40, isVegetarian: true, tags: ['baking', 'under99'], discount: 13 },
+  { id: 'turmeric-powder-100g', name: 'Turmeric Powder', slug: 'turmeric-powder-100g', categoryId: 'staples', unit: '100 g', price: 35, mrp: 42, image: '/src/assets/products/turmeric.jpg', rating: 4.3, inStock: true, stockQty: 60, isVegetarian: true, tags: ['spice', 'healthy', 'under99'], discount: 17 },
+  { id: 'cumin-powder-100g', name: 'Cumin Powder', slug: 'cumin-powder-100g', categoryId: 'staples', unit: '100 g', price: 38, mrp: 45, image: '/src/assets/products/cumin-powder.jpg', rating: 4.2, inStock: true, stockQty: 55, isVegetarian: true, tags: ['spice', 'aromatic', 'under99'], discount: 16 },
+  { id: 'coriander-powder-100g', name: 'Coriander Powder', slug: 'coriander-powder-100g', categoryId: 'staples', unit: '100 g', price: 32, mrp: 38, image: '/src/assets/products/coriander-powder.jpg', rating: 4.1, inStock: true, stockQty: 50, isVegetarian: true, tags: ['spice', 'fresh', 'under99'], discount: 16 },
+  { id: 'almonds-250g', name: 'Almonds', slug: 'almonds-250g', categoryId: 'staples', unit: '250 g', price: 285, mrp: 315, image: '/src/assets/products/almonds.jpg', rating: 4.6, inStock: true, stockQty: 20, isVegetarian: true, tags: ['premium', 'healthy', 'nuts'], discount: 10 },
+  { id: 'cashews-250g', name: 'Cashew Nuts', slug: 'cashews-250g', categoryId: 'staples', unit: '250 g', price: 420, mrp: 465, image: '/src/assets/products/cashews.jpg', rating: 4.7, inStock: true, stockQty: 15, isVegetarian: true, tags: ['premium', 'luxury', 'nuts'], discount: 10 },
+  { id: 'honey-500g', name: 'Pure Honey', slug: 'honey-500g', categoryId: 'breakfast', unit: '500 g', price: 285, mrp: 325, image: '/src/assets/products/honey.jpg', rating: 4.5, inStock: true, stockQty: 25, isVegetarian: true, tags: ['natural', 'healthy', 'sweet'], discount: 12 },
+
+  // Meat & Seafood
+  { id: 'chicken-1kg', name: 'Fresh Chicken', slug: 'chicken-1kg', categoryId: 'meat-seafood', unit: '1 kg', price: 285, mrp: 315, image: '/src/assets/products/chicken.jpg', rating: 4.4, inStock: true, stockQty: 20, tags: ['fresh', 'protein'], discount: 10 },
+  { id: 'prawns-500g', name: 'Fresh Prawns', slug: 'prawns-500g', categoryId: 'meat-seafood', unit: '500 g', price: 485, mrp: 535, image: '/src/assets/products/prawns.jpg', rating: 4.3, inStock: true, stockQty: 15, tags: ['fresh', 'seafood', 'premium'], discount: 9 },
+
+  // Frozen & Ready-to-Cook
+  { id: 'frozen-peas-1kg', name: 'Frozen Green Peas', slug: 'frozen-peas-1kg', categoryId: 'frozen', unit: '1 kg', price: 85, mrp: 95, image: '/src/assets/products/frozen-peas.jpg', rating: 4.2, inStock: true, stockQty: 40, isVegetarian: true, tags: ['frozen', 'vegetable', 'under99'], discount: 11 },
+  { id: 'ready-samosas-12pcs', name: 'Ready Samosas', slug: 'ready-samosas-12pcs', categoryId: 'frozen', unit: '12 pcs', price: 120, mrp: 135, image: '/src/assets/products/samosas.jpg', rating: 4.4, inStock: true, stockQty: 30, isVegetarian: true, tags: ['ready-to-cook', 'snack'], discount: 11 },
 ];
 
 export const coupons: Coupon[] = [

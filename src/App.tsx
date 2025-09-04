@@ -6,9 +6,11 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { CartProvider } from "./context/CartContext";
 import { Header } from "./components/Header";
 import { Footer } from "./components/Footer";
+import { ChatAssistant } from "./components/ChatAssistant";
 import { useScrollToTop } from "./hooks/useScrollToTop";
 import Home from "./pages/Home";
 import Category from "./pages/Category";
+import Search from "./pages/Search";
 import Cart from "./pages/Cart";
 import CheckoutAddress from "./pages/Checkout/Address";
 import CheckoutPayment from "./pages/Checkout/Payment";
@@ -25,6 +27,7 @@ function AppContent() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/category/:slug" element={<Category />} />
+        <Route path="/search" element={<Search />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/checkout/address" element={<CheckoutAddress />} />
         <Route path="/checkout/payment" element={<CheckoutPayment />} />
@@ -32,6 +35,7 @@ function AppContent() {
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />
+      <ChatAssistant />
     </div>
   );
 }
