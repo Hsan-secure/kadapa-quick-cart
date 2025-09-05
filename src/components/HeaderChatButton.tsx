@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { MessageCircle, X, Send, Bot, User } from 'lucide-react';
+import { MessageCircle, X, Send, Bot, User, Minimize2, Maximize2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Badge } from '@/components/ui/badge';
 
 interface Message {
   id: string;
@@ -12,8 +13,9 @@ interface Message {
   timestamp: Date;
 }
 
-export function ChatAssistant() {
+export function HeaderChatButton() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isMinimized, setIsMinimized] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
@@ -27,7 +29,7 @@ export function ChatAssistant() {
 
   const quickReplies = [
     'Track my order',
-    'Delivery time',
+    'Delivery time', 
     'Current offers',
     'Return policy',
     'Payment failed',
@@ -78,10 +80,6 @@ export function ChatAssistant() {
       return 'You can modify your order by adding items within 10 minutes of placing it, but removing items might not be possible once packing starts. What changes would you like to make?';
     }
 
-    if (msg.includes('order confirmation') || msg.includes('order placed') || msg.includes('order receipt')) {
-      return 'Order confirmations are sent via SMS and email immediately after placing your order. Please check your spam folder if you don\'t see it. Your order ID format is ORD followed by 6 digits.';
-    }
-
     // Delivery related queries
     if (msg.includes('delivery time') || msg.includes('how long') || msg.includes('when will i get')) {
       return 'Our standard delivery time is 30 minutes within Kadapa city limits. During peak hours (12-2 PM, 7-9 PM), it might take up to 45 minutes. You\'ll receive real-time updates via SMS.';
@@ -100,21 +98,9 @@ export function ChatAssistant() {
       return 'If an item shows "Out of Stock", we\'ll restock within 2-4 hours typically. You can enable notifications for the product to get alerted when it\'s back in stock. Any alternative suggestions?';
     }
 
-    if (msg.includes('fresh products') || msg.includes('quality') || msg.includes('expiry')) {
-      return 'We guarantee fresh products with at least 2 days of shelf life for perishables. All items are quality-checked before dispatch. Not satisfied? Return within 2 hours for fresh products!';
-    }
-
-    if (msg.includes('replacement') || msg.includes('substitute')) {
-      return 'If any item is unavailable, we\'ll call you before replacing it with a similar product. You can also set replacement preferences in your cart - "No replacement" or "Smart replacement".';
-    }
-
     // Payment and billing
     if (msg.includes('payment') || msg.includes('cod') || msg.includes('upi') || msg.includes('card') || msg.includes('failed')) {
       return 'We accept UPI, Cards, Net Banking, and Cash on Delivery (COD). Payment failures are rare, but if they occur, your amount is auto-refunded within 2-3 business days. Need help with a specific payment issue?';
-    }
-
-    if (msg.includes('bill') || msg.includes('invoice') || msg.includes('receipt')) {
-      return 'Your detailed bill/invoice is sent via email after delivery completion. It includes item-wise pricing, taxes, discounts, and delivery charges. Need a copy of a previous bill?';
     }
 
     if (msg.includes('refund') || msg.includes('money back')) {
@@ -126,22 +112,9 @@ export function ChatAssistant() {
       return '🎉 Current offers: KADAPA10 (10% off, max ₹50), FIRST30 (₹30 off on first order), BULK50 (₹50 off on orders above ₹999). Check the app for today\'s flash deals and category-specific offers!';
     }
 
-    if (msg.includes('wallet') || msg.includes('cashback')) {
-      return 'Earn 1% cashback on every order in your Quick Delivery wallet! Wallet money can be used for future purchases and never expires. Check your wallet balance in the app.';
-    }
-
-    // Service area and delivery
-    if (msg.includes('area') || msg.includes('location') || msg.includes('pincode') || msg.includes('deliver')) {
-      return 'We deliver across Kadapa city (pincodes: 516001, 516002, 516003, 516004). Planning to expand to Rayachoti, Jammalamadugu, and Pulivendula soon! Enter your pincode in the app to check serviceability.';
-    }
-
     // Returns and complaints
     if (msg.includes('return') || msg.includes('complaint') || msg.includes('problem') || msg.includes('issue')) {
       return 'Issues with your order? Fresh products: 2-hour return window. Packaged goods: 24-hour return for unopened items. Damaged/wrong items: Full refund guaranteed. Share your order ID for immediate assistance.';
-    }
-
-    if (msg.includes('customer care') || msg.includes('support') || msg.includes('helpline')) {
-      return 'I\'m here to help! For urgent issues, call our 24/7 helpline: 1800-123-4567. You can also raise a ticket in the app under "Help & Support". Average response time: 15 minutes.';
     }
 
     // Greetings
@@ -165,126 +138,149 @@ export function ChatAssistant() {
     return (
       <Button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 right-6 h-14 w-14 rounded-full bg-primary hover:bg-primary-dark shadow-lg z-50"
-        size="icon"
+        variant="outline"
+        size="sm"
+        className="relative bg-gradient-to-r from-primary/10 to-secondary/10 border-primary/20 hover:from-primary/20 hover:to-secondary/20 transition-all duration-300"
       >
-        <MessageCircle className="h-6 w-6" />
+        <MessageCircle className="h-4 w-4 mr-2" />
+        <span className="hidden sm:inline">Order Help</span>
+        <span className="sm:hidden">Help</span>
+        <Badge className="absolute -top-1 -right-1 h-4 w-4 p-0 flex items-center justify-center bg-success text-success-foreground text-xs">
+          !
+        </Badge>
       </Button>
     );
   }
 
   return (
-    <Card className="fixed bottom-6 right-6 w-80 h-96 shadow-xl z-50 flex flex-col">
-      <CardHeader className="pb-3">
+    <Card className={`fixed top-20 right-4 shadow-xl z-50 transition-all duration-300 ${
+      isMinimized ? 'w-80 h-12' : 'w-80 h-96'
+    }`}>
+      <CardHeader className="pb-2">
         <div className="flex items-center justify-between">
-          <CardTitle className="text-lg flex items-center gap-2">
-            <Bot className="h-5 w-5 text-primary" />
-            Grocery Assistant
+          <CardTitle className="text-sm flex items-center gap-2">
+            <Bot className="h-4 w-4 text-primary" />
+            Order Assistant
+            <Badge variant="secondary" className="text-xs">Online</Badge>
           </CardTitle>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setIsOpen(false)}
-            className="h-8 w-8"
-          >
-            <X className="h-4 w-4" />
-          </Button>
-        </div>
-      </CardHeader>
-
-      <CardContent className="flex-1 flex flex-col p-0">
-        <ScrollArea className="flex-1 px-4">
-          <div className="space-y-4">
-            {messages.map((message) => (
-              <div
-                key={message.id}
-                className={`flex items-start space-x-2 ${
-                  message.sender === 'user' ? 'justify-end' : 'justify-start'
-                }`}
-              >
-                {message.sender === 'bot' && (
-                  <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                    <Bot className="h-4 w-4 text-primary" />
-                  </div>
-                )}
-                <div
-                  className={`max-w-[220px] p-3 rounded-lg text-sm ${
-                    message.sender === 'user'
-                      ? 'bg-primary text-primary-foreground ml-8'
-                      : 'bg-muted'
-                  }`}
-                >
-                  {message.text}
-                </div>
-                {message.sender === 'user' && (
-                  <div className="h-8 w-8 rounded-full bg-secondary flex items-center justify-center shrink-0">
-                    <User className="h-4 w-4 text-secondary-foreground" />
-                  </div>
-                )}
-              </div>
-            ))}
-
-            {isTyping && (
-              <div className="flex items-start space-x-2">
-                <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center">
-                  <Bot className="h-4 w-4 text-primary" />
-                </div>
-                <div className="bg-muted p-3 rounded-lg">
-                  <div className="flex space-x-1">
-                    <div className="w-2 h-2 bg-muted-foreground/50 rounded-full animate-bounce"></div>
-                    <div className="w-2 h-2 bg-muted-foreground/50 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                    <div className="w-2 h-2 bg-muted-foreground/50 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-        </ScrollArea>
-
-        {/* Quick Replies */}
-        {messages.length === 1 && (
-          <div className="px-4 py-2">
-            <div className="text-xs text-muted-foreground mb-2">Quick actions:</div>
-            <div className="flex flex-wrap gap-1">
-              {quickReplies.slice(0, 3).map((reply) => (
-                <Button
-                  key={reply}
-                  variant="outline"
-                  size="sm"
-                  className="text-xs h-6"
-                  onClick={() => handleQuickReply(reply)}
-                >
-                  {reply}
-                </Button>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Input */}
-        <div className="p-4 border-t">
-          <div className="flex space-x-2">
-            <Input
-              placeholder="Type your message..."
-              value={newMessage}
-              onChange={(e) => setNewMessage(e.target.value)}
-              onKeyPress={(e) => {
-                if (e.key === 'Enter') {
-                  handleSendMessage(newMessage);
-                }
-              }}
-              className="flex-1"
-            />
+          <div className="flex items-center gap-1">
             <Button
+              variant="ghost"
               size="icon"
-              onClick={() => handleSendMessage(newMessage)}
-              disabled={!newMessage.trim() || isTyping}
+              onClick={() => setIsMinimized(!isMinimized)}
+              className="h-6 w-6"
             >
-              <Send className="h-4 w-4" />
+              {isMinimized ? <Maximize2 className="h-3 w-3" /> : <Minimize2 className="h-3 w-3" />}
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setIsOpen(false)}
+              className="h-6 w-6"
+            >
+              <X className="h-3 w-3" />
             </Button>
           </div>
         </div>
-      </CardContent>
+      </CardHeader>
+
+      {!isMinimized && (
+        <CardContent className="flex-1 flex flex-col p-0">
+          <ScrollArea className="flex-1 px-4 max-h-64">
+            <div className="space-y-3">
+              {messages.map((message) => (
+                <div
+                  key={message.id}
+                  className={`flex items-start space-x-2 ${
+                    message.sender === 'user' ? 'justify-end' : 'justify-start'
+                  }`}
+                >
+                  {message.sender === 'bot' && (
+                    <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                      <Bot className="h-3 w-3 text-primary" />
+                    </div>
+                  )}
+                  <div
+                    className={`max-w-[200px] p-2 rounded-lg text-xs ${
+                      message.sender === 'user'
+                        ? 'bg-primary text-primary-foreground ml-6'
+                        : 'bg-muted'
+                    }`}
+                  >
+                    {message.text}
+                  </div>
+                  {message.sender === 'user' && (
+                    <div className="h-6 w-6 rounded-full bg-secondary flex items-center justify-center shrink-0">
+                      <User className="h-3 w-3 text-secondary-foreground" />
+                    </div>
+                  )}
+                </div>
+              ))}
+
+              {isTyping && (
+                <div className="flex items-start space-x-2">
+                  <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center">
+                    <Bot className="h-3 w-3 text-primary" />
+                  </div>
+                  <div className="bg-muted p-2 rounded-lg">
+                    <div className="flex space-x-1">
+                      <div className="w-1.5 h-1.5 bg-muted-foreground/50 rounded-full animate-bounce"></div>
+                      <div className="w-1.5 h-1.5 bg-muted-foreground/50 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                      <div className="w-1.5 h-1.5 bg-muted-foreground/50 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </ScrollArea>
+
+          {/* Quick Replies */}
+          {messages.length === 1 && (
+            <div className="px-4 py-2">
+              <div className="text-xs text-muted-foreground mb-2">Quick actions:</div>
+              <div className="flex flex-wrap gap-1">
+                {quickReplies.slice(0, 3).map((reply) => (
+                  <Button
+                    key={reply}
+                    variant="outline"
+                    size="sm"
+                    className="text-xs h-6"
+                    onClick={() => handleQuickReply(reply)}
+                  >
+                    {reply}
+                  </Button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Input */}
+          <div className="p-4 border-t">
+            <div className="flex space-x-2">
+              <Input
+                placeholder="Ask about your order..."
+                value={newMessage}
+                onChange={(e) => setNewMessage(e.target.value)}
+                onKeyPress={(e) => {
+                  if (e.key === 'Enter') {
+                    handleSendMessage(newMessage);
+                  }
+                }}
+                className="flex-1 text-xs"
+                size={8}
+              />
+              <Button
+                size="icon"
+                onClick={() => handleSendMessage(newMessage)}
+                disabled={!newMessage.trim() || isTyping}
+                className="h-8 w-8"
+              >
+                <Send className="h-3 w-3" />
+              </Button>
+            </div>
+          </div>
+        </CardContent>
+      )}
     </Card>
   );
 }

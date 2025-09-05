@@ -191,4 +191,29 @@
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
+
+  .story-link {
+    @apply relative inline-block after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-primary after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left;
+  }
+
+  .hover-scale {
+    @apply transition-transform duration-200 hover:scale-105;
+  }
+
+  .btn-hero {
+    @apply bg-gradient-to-r from-primary to-secondary text-white border-0 hover:from-primary-dark hover:to-secondary-dark shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 active:scale-95;
+  }
+
+  /* Responsive button styles */
+  .btn-responsive {
+    @apply px-3 py-2 text-sm sm:px-4 sm:py-2 sm:text-base md:px-6 md:py-3 transition-all duration-200 active:scale-95 hover:shadow-md;
+  }
+
+  .btn-responsive-icon {
+    @apply h-6 w-6 sm:h-8 sm:w-8 md:h-10 md:w-10 transition-all duration-200 active:scale-95 hover:shadow-lg;
+  }
+
+  .btn-back {
+    @apply flex items-center gap-2 text-primary hover:text-primary-dark transition-colors duration-200 active:scale-95;
+  }
 }

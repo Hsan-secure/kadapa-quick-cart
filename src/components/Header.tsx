@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { useCart } from '@/context/CartContext';
 import { categories } from '@/data/products';
+import { HeaderChatButton } from './HeaderChatButton';
 
 export function Header() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -73,6 +74,8 @@ export function Header() {
 
           {/* Right Actions */}
           <div className="flex items-center space-x-2">
+            {/* Order Help Chat */}
+            <HeaderChatButton />
             {/* Search - Mobile */}
             <Button
               variant="ghost"

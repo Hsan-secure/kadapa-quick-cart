@@ -6,6 +6,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { useCart } from '@/context/CartContext';
 import { Product } from '@/data/products';
 import { toast } from '@/hooks/use-toast';
+import { RemovalAnimation } from './RemovalAnimation';
 
 interface ProductCardProps {
   product: Product;
@@ -15,6 +16,7 @@ interface ProductCardProps {
 export function ProductCard({ product, className = '' }: ProductCardProps) {
   const { addItem, updateQuantity, state } = useCart();
   const [isLoading, setIsLoading] = useState(false);
+  const [showRemovalDialog, setShowRemovalDialog] = useState(false);
   
   const cartItem = state.items.find(item => item.id === product.id);
   const quantity = cartItem?.quantity || 0;
@@ -59,15 +61,44 @@ export function ProductCard({ product, className = '' }: ProductCardProps) {
   };
 
   const handleDecrement = () => {
-    if (quantity > 0) {
+    if (quantity > 1) {
       updateQuantity(product.id, quantity - 1);
+    } else if (quantity === 1) {
+      setShowRemovalDialog(true);
     }
+  };
+
+  const handleRemovalConfirm = () => {
+    updateQuantity(product.id, 0);
+    setShowRemovalDialog(false);
+    toast({
+      title: "Item removed",
+      description: `${product.name} removed from cart`,
+      variant: "default",
+    });
+  };
+
+  const handleRemovalCancel = () => {
+    setShowRemovalDialog(false);
   };
 
   const discountPercentage = Math.round(((product.mrp - product.price) / product.mrp) * 100);
 
   return (
-    <Card className={`product-card group overflow-hidden ${className}`}>
+    <>
+      {showRemovalDialog && (
+        <RemovalAnimation
+          item={{
+            id: product.id,
+            name: product.name,
+            image: product.image,
+            quantity: quantity,
+          }}
+          onConfirm={handleRemovalConfirm}
+          onCancel={handleRemovalCancel}
+        />
+      )}
+      <Card className={`product-card group overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-[1.02] ${className}`}>
       <div className="relative aspect-square overflow-hidden bg-muted/10">
         {/* Discount Badge */}
         {discountPercentage > 0 && (
@@ -173,34 +204,34 @@ export function ProductCard({ product, className = '' }: ProductCardProps) {
         {/* Add to Cart Button - Mobile */}
         {product.inStock ? (
           quantity === 0 ? (
-            <Button
-              onClick={handleAddToCart}
-              disabled={isLoading}
-              className="w-full btn-hero"
-              size="sm"
-            >
-              <ShoppingCart className="h-4 w-4 mr-2" />
-              Add to Cart
-            </Button>
+              <Button
+                onClick={handleAddToCart}
+                disabled={isLoading}
+                className="w-full btn-hero btn-responsive"
+                size="sm"
+              >
+                <ShoppingCart className="h-4 w-4 mr-2" />
+                Add to Cart
+              </Button>
           ) : (
             <div className="flex items-center justify-center space-x-3 p-2 bg-muted/50 rounded-lg">
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={handleDecrement}
-                className="h-8 w-8 hover:bg-destructive hover:text-destructive-foreground"
-              >
-                <Minus className="h-3 w-3" />
-              </Button>
-              <span className="font-semibold min-w-[2rem] text-center">{quantity}</span>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={handleIncrement}
-                className="h-8 w-8 hover:bg-primary hover:text-primary-foreground"
-              >
-                <Plus className="h-3 w-3" />
-              </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={handleDecrement}
+                  className="btn-responsive-icon hover:bg-destructive hover:text-destructive-foreground"
+                >
+                  <Minus className="h-3 w-3" />
+                </Button>
+                <span className="font-semibold min-w-[2rem] text-center text-sm sm:text-base">{quantity}</span>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={handleIncrement}
+                  className="btn-responsive-icon hover:bg-primary hover:text-primary-foreground"
+                >
+                  <Plus className="h-3 w-3" />
+                </Button>
             </div>
           )
         ) : (
@@ -215,5 +246,6 @@ export function ProductCard({ product, className = '' }: ProductCardProps) {
         )}
       </CardContent>
     </Card>
+    </>
   );
 }

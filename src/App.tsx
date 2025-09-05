@@ -35,7 +35,7 @@ function AppContent() {
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />
-      <ChatAssistant />
+        <ChatAssistant />
     </div>
   );
 }
