@@ -16,6 +16,11 @@ import CheckoutAddress from "./pages/Checkout/Address";
 import CheckoutPayment from "./pages/Checkout/Payment";
 import OrderTracking from "./pages/Tracking";
 import NotFound from "./pages/NotFound";
+import About from "./pages/About";
+import FAQ from "./pages/FAQ";
+import Terms from "./pages/Terms";
+import Privacy from "./pages/Privacy";
+import Refund from "./pages/Refund";
 
 const queryClient = new QueryClient();
 
@@ -32,6 +37,11 @@ function AppContent() {
         <Route path="/checkout/address" element={<CheckoutAddress />} />
         <Route path="/checkout/payment" element={<CheckoutPayment />} />
         <Route path="/order/:orderId" element={<OrderTracking />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/faq" element={<FAQ />} />
+        <Route path="/terms" element={<Terms />} />
+        <Route path="/privacy" element={<Privacy />} />
+        <Route path="/refund" element={<Refund />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />

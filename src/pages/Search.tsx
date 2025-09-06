@@ -23,11 +23,17 @@ export default function Search() {
 
   // Filter products based on search query and filters
   const filteredProducts = products.filter(product => {
-    // Search query filter
-    if (searchQuery && !product.name.toLowerCase().includes(searchQuery.toLowerCase()) && 
-        !product.brand?.toLowerCase().includes(searchQuery.toLowerCase()) &&
-        !product.tags?.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))) {
-      return false;
+    // Search query filter - enhanced to search in category names too
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      const matchesName = product.name.toLowerCase().includes(query);
+      const matchesBrand = product.brand?.toLowerCase().includes(query);
+      const matchesTags = product.tags?.some(tag => tag.toLowerCase().includes(query));
+      const matchesCategory = categories.find(cat => cat.id === product.categoryId)?.name.toLowerCase().includes(query);
+      
+      if (!matchesName && !matchesBrand && !matchesTags && !matchesCategory) {
+        return false;
+      }
     }
 
     // Category filter
