@@ -72,14 +72,10 @@ export function Footer() {
               <div className="flex items-start space-x-2">
                 <MapPin className="h-4 w-4 text-muted-foreground mt-0.5" />
                 <span className="text-muted-foreground">
-                  Quick Delivery Hub<br />
-                  Gandhi Road, Kadapa<br />
-                  Andhra Pradesh 516001
+                  Quick delivery KDP<br />
+                  Nagarajpet,Kadapa<br />
+                  Andhra pradesh 516003
                 </span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Clock className="h-4 w-4 text-muted-foreground" />
-                <span className="text-muted-foreground">7 AM - 11 PM, Daily</span>
               </div>
             </div>
           </div>

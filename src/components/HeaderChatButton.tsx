@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { MessageCircle, X, Send, Bot, User, Minimize2, Maximize2 } from 'lucide-react';
+import { useState, useRef, useEffect } from 'react';
+import { MessageCircle, X, Send, Bot, User, Minimize2, Maximize2, Move } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -26,6 +26,10 @@ export function HeaderChatButton() {
   ]);
   const [newMessage, setNewMessage] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+  const dragRef = useRef<HTMLDivElement>(null);
+  const startPos = useRef({ x: 0, y: 0 });
 
   const quickReplies = [
     'Track my order',
@@ -34,6 +38,12 @@ export function HeaderChatButton() {
     'Return policy',
     'Payment failed',
     'Change address',
+    'Refund status',
+    'Reschedule delivery',
+    'Delivery partner',
+    'Missing items',
+    'Wrong items delivered',
+    'Product quality issue'
   ];
 
   const handleSendMessage = async (message: string) => {
@@ -93,6 +103,18 @@ export function HeaderChatButton() {
       return 'You can change your delivery address within 15 minutes of placing the order if it\'s still being prepared. After our delivery partner is assigned, address changes aren\'t possible for security reasons.';
     }
 
+    if (msg.includes('reschedule') || msg.includes('delay delivery') || msg.includes('later')) {
+      return 'You can reschedule your delivery up to 2 hours before the estimated time. We offer slots: 9-11 AM, 12-2 PM, 3-5 PM, 6-8 PM, 8-10 PM. Which slot works better for you?';
+    }
+
+    if (msg.includes('delivery partner') || msg.includes('delivery boy') || msg.includes('who is delivering')) {
+      return 'Once your order is dispatched, you\'ll receive delivery partner details via SMS including name, photo, and contact number. You can track their location in real-time.';
+    }
+
+    if (msg.includes('delivery area') || msg.includes('do you deliver') || msg.includes('service area')) {
+      return 'We deliver to all areas in Kadapa with pincodes: 516001, 516002, 516003, 516004. Delivery charges may vary for remote locations. Check your pincode availability during checkout.';
+    }
+
     // Product and availability
     if (msg.includes('out of stock') || msg.includes('not available') || msg.includes('stock')) {
       return 'If an item shows "Out of Stock", we\'ll restock within 2-4 hours typically. You can enable notifications for the product to get alerted when it\'s back in stock. Any alternative suggestions?';
@@ -103,8 +125,16 @@ export function HeaderChatButton() {
       return 'We accept UPI, Cards, Net Banking, and Cash on Delivery (COD). Payment failures are rare, but if they occur, your amount is auto-refunded within 2-3 business days. Need help with a specific payment issue?';
     }
 
-    if (msg.includes('refund') || msg.includes('money back')) {
-      return 'Refunds are processed within 3-5 business days to your original payment method. For COD orders, we can process bank transfers. Refund status can be tracked with your order ID.';
+    if (msg.includes('refund') || msg.includes('money back') || msg.includes('refund status')) {
+      return 'Refunds are processed within 3-5 business days to your original payment method. For COD orders, we can process bank transfers. Refund status can be tracked with your order ID. Need help tracking a specific refund?';
+    }
+
+    if (msg.includes('partial refund') || msg.includes('some items')) {
+      return 'Partial refunds are available for damaged/missing items. We refund only for affected items while you keep the rest of your order. Provide order ID and item details for processing.';
+    }
+
+    if (msg.includes('refund policy') || msg.includes('return policy')) {
+      return 'Our refund policy: Fresh products (2 hours), Dairy (4 hours), Packaged goods (24 hours if unopened). Damaged/wrong items: instant full refund. Opened perishables: case-by-case review.';
     }
 
     // Offers and discounts
@@ -117,6 +147,22 @@ export function HeaderChatButton() {
       return 'Issues with your order? Fresh products: 2-hour return window. Packaged goods: 24-hour return for unopened items. Damaged/wrong items: Full refund guaranteed. Share your order ID for immediate assistance.';
     }
 
+    if (msg.includes('missing items') || msg.includes('items not delivered') || msg.includes('incomplete order')) {
+      return 'Missing items from your order? We\'ll immediately dispatch the missing items at no extra cost or provide instant refund. Please share your order ID and list of missing items.';
+    }
+
+    if (msg.includes('wrong items') || msg.includes('different product') || msg.includes('incorrect items')) {
+      return 'Received wrong items? We\'ll collect them and deliver the correct ones within 30 minutes, or provide full refund. You can keep wrong items if they\'re perishable. Share order details.';
+    }
+
+    if (msg.includes('quality') || msg.includes('damaged') || msg.includes('expired') || msg.includes('rotten')) {
+      return 'Quality issues are our top priority! For damaged/expired items: instant full refund + replacement. Share photos via WhatsApp (+916302829644) with order ID for fastest resolution.';
+    }
+
+    if (msg.includes('delivery delayed') || msg.includes('late delivery') || msg.includes('not delivered')) {
+      return 'Delivery running late? We sincerely apologize! For delays beyond promised time: automatic compensation or discount on next order. Track real-time location or call delivery partner directly.';
+    }
+
     // Greetings
     if (msg.includes('hello') || msg.includes('hi') || msg.includes('hey')) {
       return 'Hello! 👋 I\'m your Quick Delivery assistant. I can help you with order tracking, delivery status, returns, offers, and any other questions about your grocery orders. What can I help you with today?';
@@ -127,12 +173,52 @@ export function HeaderChatButton() {
     }
 
     // Default response for order-related assistance
-    return 'I\'m here to help with your order queries! I can assist you with:\n• Order tracking & status\n• Delivery times & charges\n• Returns & refunds\n• Payment issues\n• Product availability\n• Current offers & coupons\n\nWhat specific help do you need with your order?';
+    return 'I\'m here to help with your order queries! I can assist you with:\n• Order tracking & status\n• Delivery times & rescheduling\n• Returns & refunds processing\n• Payment issues & failed transactions\n• Missing/wrong/damaged items\n• Quality complaints & replacements\n• Address changes & delivery partner info\n• Current offers & discount coupons\n\nWhat specific help do you need with your order?';
   };
 
   const handleQuickReply = (reply: string) => {
     handleSendMessage(reply);
   };
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    setIsDragging(true);
+    startPos.current = {
+      x: e.clientX - position.x,
+      y: e.clientY - position.y,
+    };
+  };
+
+  const handleMouseMove = (e: MouseEvent) => {
+    if (!isDragging) return;
+    
+    const newX = e.clientX - startPos.current.x;
+    const newY = e.clientY - startPos.current.y;
+    
+    // Keep within viewport bounds
+    const maxX = window.innerWidth - 320; // 320px is chat width
+    const maxY = window.innerHeight - (isMinimized ? 48 : 384); // heights for minimized/expanded
+    
+    setPosition({
+      x: Math.max(0, Math.min(newX, maxX)),
+      y: Math.max(0, Math.min(newY, maxY)),
+    });
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  // Add event listeners for mouse events
+  useEffect(() => {
+    if (isDragging) {
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseup', handleMouseUp);
+      return () => {
+        document.removeEventListener('mousemove', handleMouseMove);
+        document.removeEventListener('mouseup', handleMouseUp);
+      };
+    }
+  }, [isDragging]);
 
   if (!isOpen) {
     return (
@@ -153,10 +239,17 @@ export function HeaderChatButton() {
   }
 
   return (
-    <Card className={`fixed top-20 right-4 shadow-xl z-50 transition-all duration-300 ${
-      isMinimized ? 'w-80 h-12' : 'w-80 h-96'
-    }`}>
-      <CardHeader className="pb-2">
+    <Card 
+      ref={dragRef}
+      className={`fixed shadow-xl z-50 transition-all duration-300 ${
+        isMinimized ? 'w-80 h-12' : 'w-80 h-96'
+      } ${isDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
+      style={{
+        top: `${80 + position.y}px`,
+        right: `${16 + position.x}px`,
+      }}
+    >
+      <CardHeader className="pb-2" onMouseDown={handleMouseDown}>
         <div className="flex items-center justify-between">
           <CardTitle className="text-sm flex items-center gap-2">
             <Bot className="h-4 w-4 text-primary" />
@@ -164,6 +257,7 @@ export function HeaderChatButton() {
             <Badge variant="secondary" className="text-xs">Online</Badge>
           </CardTitle>
           <div className="flex items-center gap-1">
+            <Move className="h-3 w-3 text-muted-foreground cursor-grab" />
             <Button
               variant="ghost"
               size="icon"
@@ -239,7 +333,20 @@ export function HeaderChatButton() {
             <div className="px-4 py-2">
               <div className="text-xs text-muted-foreground mb-2">Quick actions:</div>
               <div className="flex flex-wrap gap-1">
-                {quickReplies.slice(0, 3).map((reply) => (
+                {quickReplies.slice(0, 4).map((reply) => (
+                  <Button
+                    key={reply}
+                    variant="outline"
+                    size="sm"
+                    className="text-xs h-6"
+                    onClick={() => handleQuickReply(reply)}
+                  >
+                    {reply}
+                  </Button>
+                ))}
+              </div>
+              <div className="flex flex-wrap gap-1 mt-1">
+                {quickReplies.slice(4, 8).map((reply) => (
                   <Button
                     key={reply}
                     variant="outline"
