@@ -16,10 +16,13 @@ export default function Home() {
   const under99Products = products.filter(p => p.price < 99).slice(0, 6);
   const freshProducts = products.filter(p => p.tags?.includes('fresh')).slice(0, 4);
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSearch = (e?: React.FormEvent | React.MouseEvent) => {
+    if (e) e.preventDefault();
     if (searchQuery.trim()) {
+      console.log('Searching for:', searchQuery);
       navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
+    } else {
+      console.log('Empty search query');
     }
   };
 
@@ -47,10 +50,17 @@ export default function Home() {
                   placeholder="Search for groceries, brands..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      handleSearch();
+                    }
+                  }}
                   className="pl-12 h-14 text-lg bg-white/10 border-white/20 text-white placeholder:text-white/70 focus:bg-white focus:text-foreground focus:placeholder:text-muted-foreground"
                 />
                 <Button
                   type="submit"
+                  onClick={handleSearch}
                   className="absolute right-2 top-2 bottom-2 px-6 bg-white text-primary hover:bg-white/90"
                 >
                   Search

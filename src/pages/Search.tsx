@@ -20,6 +20,8 @@ export default function Search() {
   const sortBy = searchParams.get('sort') || 'relevance';
   const priceMin = searchParams.get('price_min') || '';
   const priceMax = searchParams.get('price_max') || '';
+  
+  console.log('Search params:', { searchQuery, category, sortBy, priceMin, priceMax });
 
   // Filter products based on search query and filters
   const filteredProducts = products.filter(product => {
@@ -51,6 +53,8 @@ export default function Search() {
 
     return product.inStock;
   });
+  
+  console.log('Filtered products count:', filteredProducts.length);
 
   // Sort products
   const sortedProducts = [...filteredProducts].sort((a, b) => {
