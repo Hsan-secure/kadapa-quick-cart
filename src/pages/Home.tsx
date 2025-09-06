@@ -13,7 +13,23 @@ export default function Home() {
   const navigate = useNavigate();
   
   const trendingProducts = products.filter(p => p.tags?.includes('bestseller')).slice(0, 8);
-  const under99Products = products.filter(p => p.price < 99).slice(0, 6);
+  // Get diverse categories for Essentials Under 99
+  const under99Products = (() => {
+    const categorizedProducts = products.filter(p => p.price < 99);
+    const diverseSelection = [];
+    
+    // Get products from different categories
+    const categories = ['fruits-veg', 'dairy-eggs', 'staples', 'snacks', 'breakfast', 'household'];
+    
+    categories.forEach(categoryId => {
+      const categoryProducts = categorizedProducts.filter(p => p.categoryId === categoryId);
+      if (categoryProducts.length > 0) {
+        diverseSelection.push(...categoryProducts.slice(0, 1));
+      }
+    });
+    
+    return diverseSelection.slice(0, 6);
+  })();
   const freshProducts = products.filter(p => p.tags?.includes('fresh')).slice(0, 4);
 
   const handleSearch = (e?: React.FormEvent | React.MouseEvent) => {

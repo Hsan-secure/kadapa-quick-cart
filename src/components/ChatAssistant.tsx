@@ -174,12 +174,12 @@ export function ChatAssistant() {
   }
 
   return (
-    <Card className="fixed bottom-6 right-6 w-80 h-96 shadow-xl z-50 flex flex-col">
-      <CardHeader className="pb-3">
+    <Card className="fixed bottom-6 right-6 w-80 h-[500px] shadow-xl z-50 flex flex-col bg-background border">
+      <CardHeader className="pb-3 border-b">
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg flex items-center gap-2">
             <Bot className="h-5 w-5 text-primary" />
-            Grocery Assistant
+            Order Assistant
           </CardTitle>
           <Button
             variant="ghost"
@@ -192,9 +192,9 @@ export function ChatAssistant() {
         </div>
       </CardHeader>
 
-      <CardContent className="flex-1 flex flex-col p-0">
-        <ScrollArea className="flex-1 px-4">
-          <div className="space-y-4">
+      <CardContent className="flex-1 flex flex-col p-0 overflow-hidden">
+        <ScrollArea className="flex-1 px-4 py-2 max-h-[300px]">
+          <div className="space-y-4 pr-2">
             {messages.map((message) => (
               <div
                 key={message.id}
