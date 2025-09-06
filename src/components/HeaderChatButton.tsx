@@ -280,7 +280,7 @@ export function HeaderChatButton() {
 
       {!isMinimized && (
         <CardContent className="flex-1 flex flex-col p-0">
-          <ScrollArea className="flex-1 px-4 max-h-64">
+          <div className="flex-1 px-4 max-h-64 overflow-y-auto scrollbar-thin scrollbar-thumb-muted-foreground/20 scrollbar-track-transparent">
             <div className="space-y-3">
               {messages.map((message) => (
                 <div
@@ -326,7 +326,7 @@ export function HeaderChatButton() {
                 </div>
               )}
             </div>
-          </ScrollArea>
+          </div>
 
           {/* Quick Replies */}
           {messages.length === 1 && (
