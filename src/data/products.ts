@@ -53,7 +53,7 @@ export const categories: Category[] = [
 
 export const products: Product[] = [
   // Fruits & Vegetables
-  { id: 'tomatoes-1kg', name: 'Fresh Tomatoes', slug: 'tomatoes-1kg', categoryId: 'fruits-veg', unit: '1 kg', price: 45, mrp: 55, image: productImages['tomatoes.jpg'], rating: 4.2, inStock: true, stockQty: 50, isVegetarian: true, tags: ['fresh', 'local'], discount: 18 },
+  { id: 'tomatoes-1kg', name: 'Fresh Tomatoes', slug: 'tomatoes-1kg', categoryId: 'fruits-veg', unit: '1 kg', price: 45, mrp: 55, image: productImages['tomatoes.jpg'], rating: 4.2, inStock: true, stockQty: 50, isVegetarian: true, tags: ['fresh', 'local', 'bestseller'], discount: 18 },
   { id: 'onions-1kg', name: 'Red Onions', slug: 'onions-1kg', categoryId: 'fruits-veg', unit: '1 kg', price: 35, mrp: 42, image: productImages['onions.jpg'], rating: 4.1, inStock: true, stockQty: 75, isVegetarian: true, tags: ['fresh', 'essential'], discount: 17 },
   { id: 'potatoes-1kg', name: 'Fresh Potatoes', slug: 'potatoes-1kg', categoryId: 'fruits-veg', unit: '1 kg', price: 28, mrp: 35, image: productImages['potatoes.jpg'], rating: 4.3, inStock: true, stockQty: 100, isVegetarian: true, tags: ['fresh', 'staple'], discount: 20 },
   { id: 'green-chilies-250g', name: 'Green Chilies', slug: 'green-chilies-250g', categoryId: 'fruits-veg', unit: '250 g', price: 15, mrp: 20, image: productImages['green-chilies.jpg'], rating: 4.0, inStock: true, stockQty: 30, isVegetarian: true, tags: ['fresh', 'spicy'], discount: 25 },
