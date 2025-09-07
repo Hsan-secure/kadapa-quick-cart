@@ -65,6 +65,12 @@ export const products: Product[] = [
   { id: 'apples-1kg', name: 'Royal Gala Apples', slug: 'apples-1kg', categoryId: 'fruits-veg', unit: '1 kg', price: 160, mrp: 180, image: productImages['apples.jpg'], rating: 4.6, inStock: true, stockQty: 45, isVegetarian: true, tags: ['fresh', 'premium'], discount: 11 },
   { id: 'oranges-1kg', name: 'Fresh Oranges', slug: 'oranges-1kg', categoryId: 'fruits-veg', unit: '1 kg', price: 80, mrp: 95, image: productImages['oranges.jpg'], rating: 4.3, inStock: true, stockQty: 50, isVegetarian: true, tags: ['fresh', 'vitamin-c'], discount: 16 },
   { id: 'lemons-6pcs', name: 'Fresh Lemons', slug: 'lemons-6pcs', categoryId: 'fruits-veg', unit: '6 pcs', price: 18, mrp: 24, image: productImages['lemons.jpg'], rating: 4.1, inStock: true, stockQty: 40, isVegetarian: true, tags: ['fresh', 'tangy'], discount: 25 },
+  { id: 'mangoes-1kg', name: 'Fresh Mangoes', slug: 'mangoes-1kg', categoryId: 'fruits-veg', unit: '1 kg', price: 120, mrp: 140, image: productImages['mangoes.jpg'], rating: 4.6, inStock: true, stockQty: 30, isVegetarian: true, tags: ['fresh', 'sweet', 'seasonal'], discount: 14 },
+  { id: 'grapes-500g', name: 'Fresh Grapes', slug: 'grapes-500g', categoryId: 'fruits-veg', unit: '500 g', price: 85, mrp: 95, image: productImages['grapes.jpg'], rating: 4.4, inStock: true, stockQty: 40, isVegetarian: true, tags: ['fresh', 'sweet'], discount: 11 },
+  { id: 'cauliflower-1pc', name: 'Fresh Cauliflower', slug: 'cauliflower-1pc', categoryId: 'fruits-veg', unit: '1 pc', price: 32, mrp: 40, image: productImages['cauliflower.jpg'], rating: 4.2, inStock: true, stockQty: 25, isVegetarian: true, tags: ['fresh', 'under99'], discount: 20 },
+  { id: 'bell-peppers-3pcs', name: 'Bell Peppers (Capsicum)', slug: 'bell-peppers-3pcs', categoryId: 'fruits-veg', unit: '3 pcs', price: 48, mrp: 55, image: productImages['bell-peppers.jpg'], rating: 4.3, inStock: true, stockQty: 35, isVegetarian: true, tags: ['fresh', 'colorful'], discount: 13 },
+  { id: 'ginger-200g', name: 'Fresh Ginger', slug: 'ginger-200g', categoryId: 'fruits-veg', unit: '200 g', price: 24, mrp: 30, image: productImages['ginger.jpg'], rating: 4.1, inStock: true, stockQty: 45, isVegetarian: true, tags: ['fresh', 'spice'], discount: 20 },
+  { id: 'garlic-250g', name: 'Fresh Garlic', slug: 'garlic-250g', categoryId: 'fruits-veg', unit: '250 g', price: 35, mrp: 42, image: productImages['garlic.jpg'], rating: 4.2, inStock: true, stockQty: 50, isVegetarian: true, tags: ['fresh', 'aromatic'], discount: 17 },
 
   // Dairy & Eggs
   { id: 'amul-milk-1l', name: 'Amul Taaza Milk', slug: 'amul-milk-1l', categoryId: 'dairy-eggs', brand: 'Amul', unit: '1 L', price: 62, mrp: 65, image: productImages['amul-milk.jpg'], rating: 4.7, inStock: true, stockQty: 80, isVegetarian: true, tags: ['fresh', 'daily'], discount: 5 },
@@ -72,26 +78,33 @@ export const products: Product[] = [
   { id: 'nestle-curd-400g', name: 'Nestlé a+ Dahi', slug: 'nestle-curd-400g', categoryId: 'dairy-eggs', brand: 'Nestlé', unit: '400 g', price: 45, mrp: 50, image: productImages['nestle-curd.jpg'], rating: 4.4, inStock: true, stockQty: 35, isVegetarian: true, tags: ['fresh', 'healthy'], discount: 10 },
   { id: 'eggs-12pcs', name: 'Farm Fresh Eggs', slug: 'eggs-12pcs', categoryId: 'dairy-eggs', unit: '12 pcs', price: 84, mrp: 90, image: productImages['eggs.jpg'], rating: 4.5, inStock: true, stockQty: 60, tags: ['fresh', 'protein'], discount: 7 },
   { id: 'paneer-200g', name: 'Fresh Paneer', slug: 'paneer-200g', categoryId: 'dairy-eggs', unit: '200 g', price: 95, mrp: 110, image: productImages['paneer.jpg'], rating: 4.3, inStock: true, stockQty: 25, isVegetarian: true, tags: ['fresh', 'protein'], discount: 14 },
+  { id: 'cheese-slices-200g', name: 'Cheese Slices', slug: 'cheese-slices-200g', categoryId: 'dairy-eggs', unit: '200 g', price: 145, mrp: 165, image: productImages['cheese-slices.jpg'], rating: 4.4, inStock: true, stockQty: 30, isVegetarian: true, tags: ['processed', 'convenience'], discount: 12 },
 
-  // Staples
+  // Staples & Cooking Essentials
   { id: 'aashirvaad-atta-5kg', name: 'Aashirvaad Atta', slug: 'aashirvaad-atta-5kg', categoryId: 'staples', brand: 'Aashirvaad', unit: '5 kg', price: 285, mrp: 300, image: productImages['aashirvaad-atta.jpg'], rating: 4.8, inStock: true, stockQty: 50, isVegetarian: true, tags: ['bestseller', 'quality'], discount: 5 },
   { id: 'sona-masoori-rice-10kg', name: 'Sona Masoori Rice', slug: 'sona-masoori-rice-10kg', categoryId: 'staples', unit: '10 kg', price: 680, mrp: 720, image: productImages['sona-masoori-rice.jpg'], rating: 4.6, inStock: true, stockQty: 30, isVegetarian: true, tags: ['premium', 'aromatic'], discount: 6 },
+  { id: 'basmati-rice-5kg', name: 'Basmati Rice', slug: 'basmati-rice-5kg', categoryId: 'staples', unit: '5 kg', price: 485, mrp: 520, image: productImages['basmati-rice.jpg'], rating: 4.7, inStock: true, stockQty: 25, isVegetarian: true, tags: ['premium', 'long-grain'], discount: 7 },
   { id: 'toor-dal-1kg', name: 'Toor Dal', slug: 'toor-dal-1kg', categoryId: 'staples', unit: '1 kg', price: 140, mrp: 155, image: productImages['toor-dal.jpg'], rating: 4.4, inStock: true, stockQty: 45, isVegetarian: true, tags: ['protein', 'essential'], discount: 10 },
   { id: 'moong-dal-1kg', name: 'Moong Dal', slug: 'moong-dal-1kg', categoryId: 'staples', unit: '1 kg', price: 130, mrp: 145, image: productImages['moong-dal.jpg'], rating: 4.3, inStock: true, stockQty: 40, isVegetarian: true, tags: ['healthy', 'protein'], discount: 10 },
   { id: 'chana-dal-1kg', name: 'Chana Dal', slug: 'chana-dal-1kg', categoryId: 'staples', unit: '1 kg', price: 125, mrp: 140, image: productImages['chana-dal.jpg'], rating: 4.2, inStock: true, stockQty: 35, isVegetarian: true, tags: ['protein', 'tasty'], discount: 11 },
   { id: 'fortune-oil-1l', name: 'Fortune Sunflower Oil', slug: 'fortune-oil-1l', categoryId: 'staples', brand: 'Fortune', unit: '1 L', price: 155, mrp: 165, image: productImages['fortune-oil.jpg'], rating: 4.5, inStock: true, stockQty: 55, isVegetarian: true, tags: ['healthy', 'refined'], discount: 6 },
   { id: 'groundnut-oil-1l', name: 'Groundnut Oil', slug: 'groundnut-oil-1l', categoryId: 'staples', unit: '1 L', price: 180, mrp: 195, image: productImages['groundnut-oil.jpg'], rating: 4.4, inStock: true, stockQty: 40, isVegetarian: true, tags: ['traditional', 'healthy'], discount: 8 },
+  { id: 'coconut-oil-500ml', name: 'Coconut Oil', slug: 'coconut-oil-500ml', categoryId: 'staples', unit: '500 ml', price: 165, mrp: 185, image: productImages['coconut-oil.jpg'], rating: 4.3, inStock: true, stockQty: 35, isVegetarian: true, tags: ['natural', 'traditional'], discount: 11 },
   { id: 'sugar-1kg', name: 'Sugar', slug: 'sugar-1kg', categoryId: 'staples', unit: '1 kg', price: 42, mrp: 46, image: productImages['sugar.jpg'], rating: 4.1, inStock: true, stockQty: 70, isVegetarian: true, tags: ['essential', 'sweet'], discount: 9 },
   { id: 'tata-salt-1kg', name: 'Tata Salt', slug: 'tata-salt-1kg', categoryId: 'staples', brand: 'Tata', unit: '1 kg', price: 22, mrp: 25, image: productImages['tata-salt.jpg'], rating: 4.6, inStock: true, stockQty: 80, isVegetarian: true, tags: ['essential', 'iodized'], discount: 12 },
+  { id: 'turmeric-powder-200g', name: 'Turmeric Powder', slug: 'turmeric-powder-200g', categoryId: 'staples', unit: '200 g', price: 45, mrp: 52, image: productImages['turmeric.jpg'], rating: 4.2, inStock: true, stockQty: 60, isVegetarian: true, tags: ['spice', 'natural'], discount: 13 },
+  { id: 'cumin-powder-100g', name: 'Cumin Powder', slug: 'cumin-powder-100g', categoryId: 'staples', unit: '100 g', price: 35, mrp: 42, image: productImages['cumin-powder.jpg'], rating: 4.1, inStock: true, stockQty: 45, isVegetarian: true, tags: ['spice', 'aromatic'], discount: 17 },
+  { id: 'coriander-powder-200g', name: 'Coriander Powder', slug: 'coriander-powder-200g', categoryId: 'staples', unit: '200 g', price: 38, mrp: 45, image: productImages['coriander-powder.jpg'], rating: 4.0, inStock: true, stockQty: 50, isVegetarian: true, tags: ['spice', 'fresh'], discount: 16 },
+  { id: 'baking-powder-100g', name: 'Baking Powder', slug: 'baking-powder-100g', categoryId: 'staples', unit: '100 g', price: 28, mrp: 35, image: productImages['baking-powder.jpg'], rating: 4.2, inStock: true, stockQty: 40, isVegetarian: true, tags: ['baking', 'leavening'], discount: 20 },
 
-  // Snacks
+  // Snacks & Packaged Foods
   { id: 'lays-chips-52g', name: 'Lays Classic Salted', slug: 'lays-chips-52g', categoryId: 'snacks', brand: 'Lays', unit: '52 g', price: 20, mrp: 25, image: productImages['lays-chips.jpg'], rating: 4.2, inStock: true, stockQty: 100, isVegetarian: true, tags: ['crispy', 'under99'], discount: 20 },
   { id: 'kurkure-90g', name: 'Kurkure Masala Munch', slug: 'kurkure-90g', categoryId: 'snacks', brand: 'Kurkure', unit: '90 g', price: 25, mrp: 30, image: productImages['kurkure.jpg'], rating: 4.3, inStock: true, stockQty: 85, isVegetarian: true, tags: ['spicy', 'under99'], discount: 17 },
-  { id: 'maggi-noodles-4pack', name: 'Maggi Masala Noodles', slug: 'maggi-noodles-4pack', categoryId: 'snacks', brand: 'Maggi', unit: '4 pack (280g)', price: 60, mrp: 68, image: productImages['maggi-noodles.jpg'], rating: 4.7, inStock: true, stockQty: 90, isVegetarian: true, tags: ['instant', 'bestseller'], discount: 12 },
   { id: 'marie-gold-200g', name: 'Marie Gold Biscuits', slug: 'marie-gold-200g', categoryId: 'snacks', brand: 'Britannia', unit: '200 g', price: 25, mrp: 30, image: productImages['marie-gold.jpg'], rating: 4.4, inStock: true, stockQty: 70, isVegetarian: true, tags: ['classic', 'under99'], discount: 17 },
   { id: 'parle-g-250g', name: 'Parle-G Gold', slug: 'parle-g-250g', categoryId: 'snacks', brand: 'Parle', unit: '250 g', price: 35, mrp: 40, image: productImages['parle-g.jpg'], rating: 4.6, inStock: true, stockQty: 95, isVegetarian: true, tags: ['classic', 'under99'], discount: 13 },
   { id: 'good-day-cashew-200g', name: 'Good Day Cashew Cookies', slug: 'good-day-cashew-200g', categoryId: 'snacks', brand: 'Britannia', unit: '200 g', price: 45, mrp: 52, image: productImages['good-day.jpg'], rating: 4.5, inStock: true, stockQty: 60, isVegetarian: true, tags: ['premium', 'under99'], discount: 13 },
   { id: 'haldirams-bhujia-200g', name: 'Haldiram\'s Bhujia', slug: 'haldirams-bhujia-200g', categoryId: 'snacks', brand: 'Haldiram\'s', unit: '200 g', price: 65, mrp: 72, image: productImages['haldirams-bhujia.jpg'], rating: 4.6, inStock: true, stockQty: 50, isVegetarian: true, tags: ['spicy', 'traditional'], discount: 10 },
+  { id: 'maggi-noodles-4pack', name: 'Maggi Masala Noodles', slug: 'maggi-noodles-4pack', categoryId: 'snacks', brand: 'Maggi', unit: '4 pack (280g)', price: 60, mrp: 68, image: productImages['maggi-noodles.jpg'], rating: 4.7, inStock: true, stockQty: 90, isVegetarian: true, tags: ['instant', 'bestseller'], discount: 12 },
 
   // Beverages
   { id: 'thums-up-750ml', name: 'Thums Up', slug: 'thums-up-750ml', categoryId: 'beverages', brand: 'Thums Up', unit: '750 ml', price: 40, mrp: 45, image: productImages['thums-up.jpg'], rating: 4.3, inStock: true, stockQty: 60, isVegetarian: true, tags: ['cola', 'refreshing'], discount: 11 },
@@ -103,115 +116,45 @@ export const products: Product[] = [
 
   // Breakfast & Spreads
   { id: 'britannia-bread-400g', name: 'Britannia Bread', slug: 'britannia-bread-400g', categoryId: 'breakfast', brand: 'Britannia', unit: '400 g', price: 35, mrp: 40, image: productImages['britannia-bread.jpg'], rating: 4.2, inStock: true, stockQty: 60, isVegetarian: true, tags: ['fresh', 'daily'], discount: 13 },
+  { id: 'brown-bread-400g', name: 'Brown Bread', slug: 'brown-bread-400g', categoryId: 'breakfast', unit: '400 g', price: 42, mrp: 48, image: productImages['brown-bread.jpg'], rating: 4.3, inStock: true, stockQty: 35, isVegetarian: true, tags: ['healthy', 'wholegrain'], discount: 13 },
   { id: 'peanut-butter-340g', name: 'Peanut Butter', slug: 'peanut-butter-340g', categoryId: 'breakfast', unit: '340 g', price: 185, mrp: 210, image: productImages['peanut-butter.jpg'], rating: 4.3, inStock: true, stockQty: 35, isVegetarian: true, tags: ['protein', 'creamy'], discount: 12 },
   { id: 'kissan-jam-500g', name: 'Kissan Mixed Fruit Jam', slug: 'kissan-jam-500g', categoryId: 'breakfast', brand: 'Kissan', unit: '500 g', price: 155, mrp: 175, image: productImages['kissan-jam.jpg'], rating: 4.4, inStock: true, stockQty: 40, isVegetarian: true, tags: ['sweet', 'fruity'], discount: 11 },
+  { id: 'honey-500g', name: 'Pure Honey', slug: 'honey-500g', categoryId: 'breakfast', unit: '500 g', price: 245, mrp: 275, image: productImages['honey.jpg'], rating: 4.5, inStock: true, stockQty: 30, isVegetarian: true, tags: ['natural', 'healthy'], discount: 11 },
   { id: 'corn-flakes-475g', name: 'Corn Flakes', slug: 'corn-flakes-475g', categoryId: 'breakfast', unit: '475 g', price: 165, mrp: 185, image: productImages['corn-flakes.jpg'], rating: 4.3, inStock: true, stockQty: 45, isVegetarian: true, tags: ['healthy', 'crunchy'], discount: 11 },
 
   // Personal Care
   { id: 'colgate-toothpaste-200g', name: 'Colgate Toothpaste', slug: 'colgate-toothpaste-200g', categoryId: 'personal-care', brand: 'Colgate', unit: '200 g', price: 115, mrp: 125, image: productImages['colgate-toothpaste.jpg'], rating: 4.5, inStock: true, stockQty: 70, tags: ['dental', 'fresh'], discount: 8 },
   { id: 'dove-soap-3pack', name: 'Dove Soap', slug: 'dove-soap-3pack', categoryId: 'personal-care', brand: 'Dove', unit: '100 g (pack of 3)', price: 195, mrp: 220, image: productImages['dove-soap.jpg'], rating: 4.6, inStock: true, stockQty: 50, tags: ['moisturizing', 'gentle'], discount: 11 },
+  { id: 'whisper-pads', name: 'Sanitary Pads (Whisper)', slug: 'whisper-pads', categoryId: 'personal-care', brand: 'Whisper', unit: 'pack', price: 285, mrp: 315, image: productImages['whisper-pads.jpg'], rating: 4.5, inStock: true, stockQty: 30, tags: ['feminine', 'hygiene'], discount: 10 },
 
   // Household
   { id: 'surf-excel-2kg', name: 'Surf Excel Matic', slug: 'surf-excel-2kg', categoryId: 'household', brand: 'Surf Excel', unit: '2 kg', price: 385, mrp: 425, image: productImages['surf-excel.jpg'], rating: 4.4, inStock: true, stockQty: 40, tags: ['detergent', 'washing'], discount: 9 },
   { id: 'vim-dishwash-500ml', name: 'Vim Dishwash Liquid', slug: 'vim-dishwash-500ml', categoryId: 'household', brand: 'Vim', unit: '500 ml', price: 85, mrp: 95, image: productImages['vim-dishwash.jpg'], rating: 4.3, inStock: true, stockQty: 55, tags: ['cleaning', 'kitchen'], discount: 11 },
   { id: 'harpic-1l', name: 'Harpic', slug: 'harpic-1l', categoryId: 'household', brand: 'Harpic', unit: '1 L', price: 165, mrp: 185, image: productImages['harpic.jpg'], rating: 4.2, inStock: true, stockQty: 35, tags: ['disinfectant', 'bathroom'], discount: 11 },
   { id: 'lizol-1l', name: 'Lizol Floor Cleaner', slug: 'lizol-1l', categoryId: 'household', brand: 'Lizol', unit: '1 L', price: 145, mrp: 165, image: productImages['lizol.jpg'], rating: 4.3, inStock: true, stockQty: 45, tags: ['floor', 'disinfectant'], discount: 12 },
-  { id: 'whisper-pads', name: 'Sanitary Pads (Whisper)', slug: 'whisper-pads', categoryId: 'personal-care', brand: 'Whisper', unit: 'pack', price: 285, mrp: 315, image: productImages['whisper-pads.jpg'], rating: 4.5, inStock: true, stockQty: 30, tags: ['feminine', 'hygiene'], discount: 10 },
 
   // Baby Care
   { id: 'pampers-diapers-medium', name: 'Pampers Diapers', slug: 'pampers-diapers-medium', categoryId: 'baby-care', brand: 'Pampers', unit: 'Medium (20 pcs)', price: 485, mrp: 535, image: productImages['pampers-diapers.jpg'], rating: 4.6, inStock: true, stockQty: 25, tags: ['baby', 'comfort'], discount: 9 },
   { id: 'baby-wipes-72pcs', name: 'Baby Wipes', slug: 'baby-wipes-72pcs', categoryId: 'baby-care', unit: '72 pcs', price: 155, mrp: 175, image: productImages['baby-wipes.jpg'], rating: 4.4, inStock: true, stockQty: 40, tags: ['baby', 'gentle'], discount: 11 },
 
-  // Bakery
-  { id: 'brown-bread-400g', name: 'Brown Bread', slug: 'brown-bread-400g', categoryId: 'bakery', unit: '400 g', price: 42, mrp: 48, image: productImages['brown-bread.jpg'], rating: 4.3, inStock: true, stockQty: 35, isVegetarian: true, tags: ['healthy', 'wholegrain'], discount: 13 },
-
-  // Additional Fruits & Vegetables
-  { id: 'mangoes-1kg', name: 'Fresh Mangoes', slug: 'mangoes-1kg', categoryId: 'fruits-veg', unit: '1 kg', price: 120, mrp: 140, image: productImages['mangoes.jpg'], rating: 4.6, inStock: true, stockQty: 30, isVegetarian: true, tags: ['fresh', 'sweet', 'seasonal'], discount: 14 },
-  { id: 'grapes-500g', name: 'Fresh Grapes', slug: 'grapes-500g', categoryId: 'fruits-veg', unit: '500 g', price: 85, mrp: 95, image: productImages['grapes.jpg'], rating: 4.4, inStock: true, stockQty: 40, isVegetarian: true, tags: ['fresh', 'sweet'], discount: 11 },
-  { id: 'cauliflower-1pc', name: 'Fresh Cauliflower', slug: 'cauliflower-1pc', categoryId: 'fruits-veg', unit: '1 pc', price: 32, mrp: 40, image: productImages['cauliflower.jpg'], rating: 4.2, inStock: true, stockQty: 25, isVegetarian: true, tags: ['fresh', 'under99'], discount: 20 },
-  { id: 'bell-peppers-3pcs', name: 'Bell Peppers (Capsicum)', slug: 'bell-peppers-3pcs', categoryId: 'fruits-veg', unit: '3 pcs', price: 48, mrp: 55, image: productImages['bell-peppers.jpg'], rating: 4.3, inStock: true, stockQty: 35, isVegetarian: true, tags: ['fresh', 'colorful', 'under99'], discount: 13 },
-  { id: 'ginger-200g', name: 'Fresh Ginger', slug: 'ginger-200g', categoryId: 'fruits-veg', unit: '200 g', price: 24, mrp: 30, image: productImages['ginger.jpg'], rating: 4.1, inStock: true, stockQty: 45, isVegetarian: true, tags: ['fresh', 'spice', 'under99'], discount: 20 },
-  { id: 'garlic-250g', name: 'Fresh Garlic', slug: 'garlic-250g', categoryId: 'fruits-veg', unit: '250 g', price: 35, mrp: 42, image: productImages['garlic.jpg'], rating: 4.2, inStock: true, stockQty: 50, isVegetarian: true, tags: ['fresh', 'essential', 'under99'], discount: 17 },
-
-  // Additional Dairy Products
-  { id: 'cheese-slices-200g', name: 'Amul Cheese Slices', slug: 'cheese-slices-200g', categoryId: 'dairy-eggs', brand: 'Amul', unit: '200 g', price: 140, mrp: 155, image: productImages['cheese-slices.jpg'], rating: 4.5, inStock: true, stockQty: 30, isVegetarian: true, tags: ['creamy', 'premium'], discount: 10 },
-
-  // Additional Staples
-  { id: 'basmati-rice-5kg', name: 'Basmati Rice', slug: 'basmati-rice-5kg', categoryId: 'staples', unit: '5 kg', price: 485, mrp: 525, image: productImages['basmati-rice.jpg'], rating: 4.7, inStock: true, stockQty: 25, isVegetarian: true, tags: ['premium', 'aromatic', 'bestseller'], discount: 8 },
-  { id: 'coconut-oil-500ml', name: 'Coconut Oil', slug: 'coconut-oil-500ml', categoryId: 'staples', unit: '500 ml', price: 185, mrp: 210, image: productImages['coconut-oil.jpg'], rating: 4.4, inStock: true, stockQty: 35, isVegetarian: true, tags: ['healthy', 'traditional'], discount: 12 },
-  { id: 'baking-powder-100g', name: 'Baking Powder', slug: 'baking-powder-100g', categoryId: 'staples', unit: '100 g', price: 45, mrp: 52, image: productImages['baking-powder.jpg'], rating: 4.2, inStock: true, stockQty: 40, isVegetarian: true, tags: ['baking', 'under99'], discount: 13 },
-  { id: 'turmeric-powder-100g', name: 'Turmeric Powder', slug: 'turmeric-powder-100g', categoryId: 'staples', unit: '100 g', price: 35, mrp: 42, image: productImages['turmeric.jpg'], rating: 4.3, inStock: true, stockQty: 60, isVegetarian: true, tags: ['spice', 'healthy', 'under99'], discount: 17 },
-  { id: 'cumin-powder-100g', name: 'Cumin Powder', slug: 'cumin-powder-100g', categoryId: 'staples', unit: '100 g', price: 38, mrp: 45, image: productImages['cumin-powder.jpg'], rating: 4.2, inStock: true, stockQty: 55, isVegetarian: true, tags: ['spice', 'aromatic', 'under99'], discount: 16 },
-  { id: 'coriander-powder-100g', name: 'Coriander Powder', slug: 'coriander-powder-100g', categoryId: 'staples', unit: '100 g', price: 32, mrp: 38, image: productImages['coriander-powder.jpg'], rating: 4.1, inStock: true, stockQty: 50, isVegetarian: true, tags: ['spice', 'fresh', 'under99'], discount: 16 },
-  { id: 'almonds-250g', name: 'Almonds', slug: 'almonds-250g', categoryId: 'staples', unit: '250 g', price: 285, mrp: 315, image: productImages['almonds.jpg'], rating: 4.6, inStock: true, stockQty: 20, isVegetarian: true, tags: ['premium', 'healthy', 'nuts'], discount: 10 },
-  { id: 'cashews-250g', name: 'Cashew Nuts', slug: 'cashews-250g', categoryId: 'staples', unit: '250 g', price: 420, mrp: 465, image: productImages['cashews.jpg'], rating: 4.7, inStock: true, stockQty: 15, isVegetarian: true, tags: ['premium', 'luxury', 'nuts'], discount: 10 },
-  { id: 'honey-500g', name: 'Pure Honey', slug: 'honey-500g', categoryId: 'breakfast', unit: '500 g', price: 285, mrp: 325, image: productImages['honey.jpg'], rating: 4.5, inStock: true, stockQty: 25, isVegetarian: true, tags: ['natural', 'healthy', 'sweet'], discount: 12 },
-
   // Meat & Seafood
-  { id: 'chicken-1kg', name: 'Fresh Chicken', slug: 'chicken-1kg', categoryId: 'meat-seafood', unit: '1 kg', price: 285, mrp: 315, image: productImages['chicken.jpg'], rating: 4.4, inStock: true, stockQty: 20, tags: ['fresh', 'protein'], discount: 10 },
-  { id: 'prawns-500g', name: 'Fresh Prawns', slug: 'prawns-500g', categoryId: 'meat-seafood', unit: '500 g', price: 485, mrp: 535, image: productImages['prawns.jpg'], rating: 4.3, inStock: true, stockQty: 15, tags: ['fresh', 'seafood', 'premium'], discount: 9 },
-
-  // More Dairy & Eggs
-  { id: 'yogurt-400g', name: 'Greek Yogurt', slug: 'yogurt-400g', categoryId: 'dairy-eggs', unit: '400 g', price: 65, mrp: 75, image: productImages['nestle-curd.jpg'], rating: 4.4, inStock: true, stockQty: 35, isVegetarian: true, tags: ['healthy', 'protein', 'under99'], discount: 13 },
-  { id: 'ghee-500ml', name: 'Pure Ghee', slug: 'ghee-500ml', categoryId: 'dairy-eggs', unit: '500 ml', price: 385, mrp: 425, image: productImages['amul-butter.jpg'], rating: 4.6, inStock: true, stockQty: 25, isVegetarian: true, tags: ['premium', 'traditional'], discount: 9 },
-  { id: 'cream-200ml', name: 'Fresh Cream', slug: 'cream-200ml', categoryId: 'dairy-eggs', unit: '200 ml', price: 95, mrp: 105, image: productImages['amul-milk.jpg'], rating: 4.3, inStock: true, stockQty: 30, isVegetarian: true, tags: ['cooking', 'under99'], discount: 10 },
-
-  // More Beverages
-  { id: 'sprite-750ml', name: 'Sprite', slug: 'sprite-750ml', categoryId: 'beverages', brand: 'Sprite', unit: '750 ml', price: 38, mrp: 45, image: productImages['coca-cola.jpg'], rating: 4.2, inStock: true, stockQty: 50, isVegetarian: true, tags: ['lemon', 'refreshing', 'under99'], discount: 16 },
-  { id: 'bournvita-500g', name: 'Bournvita', slug: 'bournvita-500g', categoryId: 'beverages', brand: 'Bournvita', unit: '500 g', price: 285, mrp: 315, image: productImages['nescafe-classic.jpg'], rating: 4.5, inStock: true, stockQty: 40, isVegetarian: true, tags: ['health-drink', 'chocolate'], discount: 10 },
-  { id: 'lassi-200ml', name: 'Sweet Lassi', slug: 'lassi-200ml', categoryId: 'beverages', unit: '200 ml', price: 25, mrp: 30, image: productImages['amul-milk.jpg'], rating: 4.3, inStock: true, stockQty: 45, isVegetarian: true, tags: ['traditional', 'under99'], discount: 17 },
-
-  // More Personal Care
-  { id: 'shampoo-400ml', name: 'Herbal Shampoo', slug: 'shampoo-400ml', categoryId: 'personal-care', unit: '400 ml', price: 165, mrp: 185, image: productImages['dove-soap.jpg'], rating: 4.4, inStock: true, stockQty: 35, tags: ['hair-care', 'herbal'], discount: 11 },
-  { id: 'face-wash-100ml', name: 'Face Wash', slug: 'face-wash-100ml', categoryId: 'personal-care', unit: '100 ml', price: 85, mrp: 95, image: productImages['dove-soap.jpg'], rating: 4.2, inStock: true, stockQty: 50, tags: ['skincare', 'under99'], discount: 11 },
-  { id: 'deodorant-150ml', name: 'Deodorant Spray', slug: 'deodorant-150ml', categoryId: 'personal-care', unit: '150 ml', price: 145, mrp: 165, image: productImages['dove-soap.jpg'], rating: 4.3, inStock: true, stockQty: 40, tags: ['freshness', 'long-lasting'], discount: 12 },
-  { id: 'body-lotion-200ml', name: 'Moisturizing Lotion', slug: 'body-lotion-200ml', categoryId: 'personal-care', unit: '200 ml', price: 125, mrp: 140, image: productImages['dove-soap.jpg'], rating: 4.4, inStock: true, stockQty: 45, tags: ['moisturizing', 'soft'], discount: 11 },
-
-  // More Household Items
-  { id: 'toilet-paper-4rolls', name: 'Toilet Paper', slug: 'toilet-paper-4rolls', categoryId: 'household', unit: '4 rolls', price: 85, mrp: 95, image: productImages['surf-excel.jpg'], rating: 4.1, inStock: true, stockQty: 60, tags: ['essential', 'soft', 'under99'], discount: 11 },
-  { id: 'glass-cleaner-500ml', name: 'Glass Cleaner', slug: 'glass-cleaner-500ml', categoryId: 'household', unit: '500 ml', price: 75, mrp: 85, image: productImages['vim-dishwash.jpg'], rating: 4.2, inStock: true, stockQty: 40, tags: ['cleaning', 'shine', 'under99'], discount: 12 },
-  { id: 'air-freshener-300ml', name: 'Air Freshener', slug: 'air-freshener-300ml', categoryId: 'household', unit: '300 ml', price: 95, mrp: 110, image: productImages['harpic.jpg'], rating: 4.3, inStock: true, stockQty: 35, tags: ['fragrance', 'fresh', 'under99'], discount: 14 },
-  { id: 'kitchen-towels-2rolls', name: 'Kitchen Towels', slug: 'kitchen-towels-2rolls', categoryId: 'household', unit: '2 rolls', price: 65, mrp: 75, image: productImages['surf-excel.jpg'], rating: 4.0, inStock: true, stockQty: 50, tags: ['absorbent', 'kitchen', 'under99'], discount: 13 },
-
-  // More Baby Care
-  { id: 'baby-oil-200ml', name: 'Baby Oil', slug: 'baby-oil-200ml', categoryId: 'baby-care', unit: '200 ml', price: 125, mrp: 140, image: productImages['baby-wipes.jpg'], rating: 4.5, inStock: true, stockQty: 30, tags: ['gentle', 'moisturizing'], discount: 11 },
-  { id: 'baby-powder-200g', name: 'Baby Powder', slug: 'baby-powder-200g', categoryId: 'baby-care', unit: '200 g', price: 85, mrp: 95, image: productImages['baby-wipes.jpg'], rating: 4.4, inStock: true, stockQty: 35, tags: ['soft', 'fragrant', 'under99'], discount: 11 },
-  { id: 'baby-shampoo-200ml', name: 'Baby Shampoo', slug: 'baby-shampoo-200ml', categoryId: 'baby-care', unit: '200 ml', price: 145, mrp: 165, image: productImages['baby-wipes.jpg'], rating: 4.6, inStock: true, stockQty: 25, tags: ['tear-free', 'gentle'], discount: 12 },
-  { id: 'baby-soap-75g', name: 'Baby Soap', slug: 'baby-soap-75g', categoryId: 'baby-care', unit: '75 g', price: 45, mrp: 52, image: productImages['baby-wipes.jpg'], rating: 4.3, inStock: true, stockQty: 40, tags: ['mild', 'gentle', 'under99'], discount: 13 },
-
-  // More Bakery Items
-  { id: 'cake-rusk-200g', name: 'Cake Rusk', slug: 'cake-rusk-200g', categoryId: 'bakery', unit: '200 g', price: 65, mrp: 75, image: productImages['brown-bread.jpg'], rating: 4.2, inStock: true, stockQty: 45, isVegetarian: true, tags: ['crispy', 'tea-time', 'under99'], discount: 13 },
-  { id: 'pav-bread-6pcs', name: 'Pav Bread', slug: 'pav-bread-6pcs', categoryId: 'bakery', unit: '6 pcs', price: 25, mrp: 30, image: productImages['britannia-bread.jpg'], rating: 4.1, inStock: true, stockQty: 60, isVegetarian: true, tags: ['soft', 'fresh', 'under99'], discount: 17 },
-  { id: 'cookies-250g', name: 'Butter Cookies', slug: 'cookies-250g', categoryId: 'bakery', unit: '250 g', price: 85, mrp: 95, image: productImages['good-day.jpg'], rating: 4.4, inStock: true, stockQty: 40, isVegetarian: true, tags: ['sweet', 'crispy', 'under99'], discount: 11 },
-
-  // More Breakfast Items
-  { id: 'oats-500g', name: 'Rolled Oats', slug: 'oats-500g', categoryId: 'breakfast', unit: '500 g', price: 125, mrp: 140, image: productImages['corn-flakes.jpg'], rating: 4.5, inStock: true, stockQty: 35, isVegetarian: true, tags: ['healthy', 'fiber'], discount: 11 },
-  { id: 'muesli-500g', name: 'Mixed Fruit Muesli', slug: 'muesli-500g', categoryId: 'breakfast', unit: '500 g', price: 185, mrp: 210, image: productImages['corn-flakes.jpg'], rating: 4.4, inStock: true, stockQty: 30, isVegetarian: true, tags: ['healthy', 'fruity'], discount: 12 },
-  { id: 'chocolate-spread-350g', name: 'Chocolate Spread', slug: 'chocolate-spread-350g', categoryId: 'breakfast', unit: '350 g', price: 165, mrp: 185, image: productImages['peanut-butter.jpg'], rating: 4.6, inStock: true, stockQty: 25, isVegetarian: true, tags: ['sweet', 'creamy'], discount: 11 },
+  { id: 'chicken-1kg', name: 'Fresh Chicken', slug: 'chicken-1kg', categoryId: 'meat-seafood', unit: '1 kg', price: 285, mrp: 320, image: productImages['chicken.jpg'], rating: 4.3, inStock: true, stockQty: 20, tags: ['fresh', 'protein'], discount: 11 },
+  { id: 'prawns-500g', name: 'Fresh Prawns', slug: 'prawns-500g', categoryId: 'meat-seafood', unit: '500 g', price: 485, mrp: 550, image: productImages['prawns.jpg'], rating: 4.4, inStock: true, stockQty: 15, tags: ['fresh', 'seafood'], discount: 12 },
 
   // Frozen & Ready-to-Cook
-  { id: 'frozen-peas-1kg', name: 'Frozen Green Peas', slug: 'frozen-peas-1kg', categoryId: 'frozen', unit: '1 kg', price: 85, mrp: 95, image: productImages['frozen-peas.jpg'], rating: 4.2, inStock: true, stockQty: 40, isVegetarian: true, tags: ['frozen', 'vegetable', 'under99'], discount: 11 },
-  { id: 'ready-samosas-12pcs', name: 'Ready Samosas', slug: 'ready-samosas-12pcs', categoryId: 'frozen', unit: '12 pcs', price: 120, mrp: 135, image: productImages['samosas.jpg'], rating: 4.4, inStock: true, stockQty: 30, isVegetarian: true, tags: ['ready-to-cook', 'snack'], discount: 11 },
-  { id: 'frozen-prawns-500g', name: 'Frozen Prawns', slug: 'frozen-prawns-500g', categoryId: 'frozen', unit: '500 g', price: 285, mrp: 315, image: productImages['prawns.jpg'], rating: 4.3, inStock: true, stockQty: 20, tags: ['seafood', 'frozen'], discount: 10 },
-  { id: 'ready-parathas-5pcs', name: 'Ready Parathas', slug: 'ready-parathas-5pcs', categoryId: 'frozen', unit: '5 pcs', price: 95, mrp: 110, image: productImages['britannia-bread.jpg'], rating: 4.2, inStock: true, stockQty: 35, isVegetarian: true, tags: ['ready-to-cook', 'under99'], discount: 14 },
+  { id: 'frozen-peas-500g', name: 'Frozen Green Peas', slug: 'frozen-peas-500g', categoryId: 'frozen', unit: '500 g', price: 85, mrp: 95, image: productImages['frozen-peas.jpg'], rating: 4.2, inStock: true, stockQty: 40, isVegetarian: true, tags: ['frozen', 'convenience'], discount: 11 },
+  { id: 'samosas-6pcs', name: 'Ready Samosas', slug: 'samosas-6pcs', categoryId: 'frozen', unit: '6 pcs', price: 65, mrp: 75, image: productImages['samosas.jpg'], rating: 4.3, inStock: true, stockQty: 30, isVegetarian: true, tags: ['frozen', 'snack'], discount: 13 },
+
+  // Nuts & Dry Fruits
+  { id: 'almonds-250g', name: 'Premium Almonds', slug: 'almonds-250g', categoryId: 'staples', unit: '250 g', price: 285, mrp: 325, image: productImages['almonds.jpg'], rating: 4.6, inStock: true, stockQty: 35, isVegetarian: true, tags: ['premium', 'healthy'], discount: 12 },
+  { id: 'cashews-250g', name: 'Premium Cashews', slug: 'cashews-250g', categoryId: 'staples', unit: '250 g', price: 485, mrp: 550, image: productImages['cashews.jpg'], rating: 4.7, inStock: true, stockQty: 25, isVegetarian: true, tags: ['premium', 'luxury'], discount: 12 },
 ];
 
 export const coupons: Coupon[] = [
-  {
-    code: 'KADAPA10',
-    type: 'percent',
-    value: 10,
-    maxDiscount: 50,
-    firstOrderOnly: false,
-    description: '10% off up to ₹50 - No minimum order'
-  },
-  {
-    code: 'FIRST30',
-    type: 'flat',
-    value: 30,
-    firstOrderOnly: true,
-    description: '₹30 off on your first order'
-  }
+  { code: 'FIRST50', type: 'percent', value: 50, maxDiscount: 100, firstOrderOnly: true, description: '50% off on first order (max ₹100)' },
+  { code: 'SAVE100', type: 'flat', value: 100, description: 'Flat ₹100 off on orders above ₹500' },
+  { code: 'FRESH20', type: 'percent', value: 20, maxDiscount: 75, description: '20% off on fresh fruits & vegetables (max ₹75)' },
+  { code: 'GROCERY15', type: 'percent', value: 15, maxDiscount: 150, description: '15% off on grocery items (max ₹150)' }
 ];
 
 export const allowedPincodes = ['516001', '516002', '516003', '516004'];
