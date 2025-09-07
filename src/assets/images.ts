@@ -95,6 +95,47 @@ import maggiNoodlesImg from './products/maggi-noodles.jpg';
 import almondsImg from './products/almonds.jpg';
 import cashewsImg from './products/cashews.jpg';
 
+// Additional Fresh Produce
+import broccoliImg from './products/broccoli.jpg';
+import okraImg from './products/okra.jpg';
+import greenBeansImg from './products/green-beans.jpg';
+import eggplantImg from './products/eggplant.jpg';
+import strawberriesImg from './products/strawberries.jpg';
+import pineappleImg from './products/pineapple.jpg';
+import papayaImg from './products/papaya.jpg';
+
+// Additional Dairy Products
+import greekYogurtImg from './products/greek-yogurt.jpg';
+import mozzarellaImg from './products/mozzarella.jpg';
+
+// Additional Staples & Grains
+import wheatPastaImg from './products/wheat-pasta.jpg';
+import quinoaImg from './products/quinoa.jpg';
+import oatsImg from './products/oats.jpg';
+import wholeGrainCerealImg from './products/whole-grain-cereal.jpg';
+import pastaSauceImg from './products/pasta-sauce.jpg';
+
+// Additional Beverages
+import coconutWaterImg from './products/coconut-water.jpg';
+import greenTeaImg from './products/green-tea.jpg';
+import appleJuiceImg from './products/apple-juice.jpg';
+import energyDrinkImg from './products/energy-drink.jpg';
+
+// Additional Snacks & Health Foods
+import darkChocolateImg from './products/dark-chocolate.jpg';
+import proteinBarImg from './products/protein-bar.jpg';
+
+// Additional Personal Care
+import shampooImg from './products/shampoo.jpg';
+import handSanitizerImg from './products/hand-sanitizer.jpg';
+
+// Additional Household
+import fabricSoftenerImg from './products/fabric-softener.jpg';
+import toiletPaperImg from './products/toilet-paper.jpg';
+
+// Additional Baby Care
+import babyFormulaImg from './products/baby-formula.jpg';
+
 export const productImages = {
   // Fruits & Vegetables
   'tomatoes.jpg': tomatoesImg,
@@ -192,4 +233,45 @@ export const productImages = {
   // Nuts & Dry Fruits
   'almonds.jpg': almondsImg,
   'cashews.jpg': cashewsImg,
+
+  // Additional Fresh Produce
+  'broccoli.jpg': broccoliImg,
+  'okra.jpg': okraImg,
+  'green-beans.jpg': greenBeansImg,
+  'eggplant.jpg': eggplantImg,
+  'strawberries.jpg': strawberriesImg,
+  'pineapple.jpg': pineappleImg,
+  'papaya.jpg': papayaImg,
+
+  // Additional Dairy Products
+  'greek-yogurt.jpg': greekYogurtImg,
+  'mozzarella.jpg': mozzarellaImg,
+
+  // Additional Staples & Grains
+  'wheat-pasta.jpg': wheatPastaImg,
+  'quinoa.jpg': quinoaImg,
+  'oats.jpg': oatsImg,
+  'whole-grain-cereal.jpg': wholeGrainCerealImg,
+  'pasta-sauce.jpg': pastaSauceImg,
+
+  // Additional Beverages
+  'coconut-water.jpg': coconutWaterImg,
+  'green-tea.jpg': greenTeaImg,
+  'apple-juice.jpg': appleJuiceImg,
+  'energy-drink.jpg': energyDrinkImg,
+
+  // Additional Snacks & Health Foods
+  'dark-chocolate.jpg': darkChocolateImg,
+  'protein-bar.jpg': proteinBarImg,
+
+  // Additional Personal Care
+  'shampoo.jpg': shampooImg,
+  'hand-sanitizer.jpg': handSanitizerImg,
+
+  // Additional Household
+  'fabric-softener.jpg': fabricSoftenerImg,
+  'toilet-paper.jpg': toiletPaperImg,
+
+  // Additional Baby Care
+  'baby-formula.jpg': babyFormulaImg,
 };
