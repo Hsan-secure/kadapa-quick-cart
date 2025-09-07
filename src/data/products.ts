@@ -151,9 +151,49 @@ export const products: Product[] = [
   { id: 'chicken-1kg', name: 'Fresh Chicken', slug: 'chicken-1kg', categoryId: 'meat-seafood', unit: '1 kg', price: 285, mrp: 315, image: productImages['chicken.jpg'], rating: 4.4, inStock: true, stockQty: 20, tags: ['fresh', 'protein'], discount: 10 },
   { id: 'prawns-500g', name: 'Fresh Prawns', slug: 'prawns-500g', categoryId: 'meat-seafood', unit: '500 g', price: 485, mrp: 535, image: productImages['prawns.jpg'], rating: 4.3, inStock: true, stockQty: 15, tags: ['fresh', 'seafood', 'premium'], discount: 9 },
 
+  // More Dairy & Eggs
+  { id: 'yogurt-400g', name: 'Greek Yogurt', slug: 'yogurt-400g', categoryId: 'dairy-eggs', unit: '400 g', price: 65, mrp: 75, image: productImages['nestle-curd.jpg'], rating: 4.4, inStock: true, stockQty: 35, isVegetarian: true, tags: ['healthy', 'protein', 'under99'], discount: 13 },
+  { id: 'ghee-500ml', name: 'Pure Ghee', slug: 'ghee-500ml', categoryId: 'dairy-eggs', unit: '500 ml', price: 385, mrp: 425, image: productImages['amul-butter.jpg'], rating: 4.6, inStock: true, stockQty: 25, isVegetarian: true, tags: ['premium', 'traditional'], discount: 9 },
+  { id: 'cream-200ml', name: 'Fresh Cream', slug: 'cream-200ml', categoryId: 'dairy-eggs', unit: '200 ml', price: 95, mrp: 105, image: productImages['amul-milk.jpg'], rating: 4.3, inStock: true, stockQty: 30, isVegetarian: true, tags: ['cooking', 'under99'], discount: 10 },
+
+  // More Beverages
+  { id: 'sprite-750ml', name: 'Sprite', slug: 'sprite-750ml', categoryId: 'beverages', brand: 'Sprite', unit: '750 ml', price: 38, mrp: 45, image: productImages['coca-cola.jpg'], rating: 4.2, inStock: true, stockQty: 50, isVegetarian: true, tags: ['lemon', 'refreshing', 'under99'], discount: 16 },
+  { id: 'bournvita-500g', name: 'Bournvita', slug: 'bournvita-500g', categoryId: 'beverages', brand: 'Bournvita', unit: '500 g', price: 285, mrp: 315, image: productImages['nescafe-classic.jpg'], rating: 4.5, inStock: true, stockQty: 40, isVegetarian: true, tags: ['health-drink', 'chocolate'], discount: 10 },
+  { id: 'lassi-200ml', name: 'Sweet Lassi', slug: 'lassi-200ml', categoryId: 'beverages', unit: '200 ml', price: 25, mrp: 30, image: productImages['amul-milk.jpg'], rating: 4.3, inStock: true, stockQty: 45, isVegetarian: true, tags: ['traditional', 'under99'], discount: 17 },
+
+  // More Personal Care
+  { id: 'shampoo-400ml', name: 'Herbal Shampoo', slug: 'shampoo-400ml', categoryId: 'personal-care', unit: '400 ml', price: 165, mrp: 185, image: productImages['dove-soap.jpg'], rating: 4.4, inStock: true, stockQty: 35, tags: ['hair-care', 'herbal'], discount: 11 },
+  { id: 'face-wash-100ml', name: 'Face Wash', slug: 'face-wash-100ml', categoryId: 'personal-care', unit: '100 ml', price: 85, mrp: 95, image: productImages['dove-soap.jpg'], rating: 4.2, inStock: true, stockQty: 50, tags: ['skincare', 'under99'], discount: 11 },
+  { id: 'deodorant-150ml', name: 'Deodorant Spray', slug: 'deodorant-150ml', categoryId: 'personal-care', unit: '150 ml', price: 145, mrp: 165, image: productImages['dove-soap.jpg'], rating: 4.3, inStock: true, stockQty: 40, tags: ['freshness', 'long-lasting'], discount: 12 },
+  { id: 'body-lotion-200ml', name: 'Moisturizing Lotion', slug: 'body-lotion-200ml', categoryId: 'personal-care', unit: '200 ml', price: 125, mrp: 140, image: productImages['dove-soap.jpg'], rating: 4.4, inStock: true, stockQty: 45, tags: ['moisturizing', 'soft'], discount: 11 },
+
+  // More Household Items
+  { id: 'toilet-paper-4rolls', name: 'Toilet Paper', slug: 'toilet-paper-4rolls', categoryId: 'household', unit: '4 rolls', price: 85, mrp: 95, image: productImages['surf-excel.jpg'], rating: 4.1, inStock: true, stockQty: 60, tags: ['essential', 'soft', 'under99'], discount: 11 },
+  { id: 'glass-cleaner-500ml', name: 'Glass Cleaner', slug: 'glass-cleaner-500ml', categoryId: 'household', unit: '500 ml', price: 75, mrp: 85, image: productImages['vim-dishwash.jpg'], rating: 4.2, inStock: true, stockQty: 40, tags: ['cleaning', 'shine', 'under99'], discount: 12 },
+  { id: 'air-freshener-300ml', name: 'Air Freshener', slug: 'air-freshener-300ml', categoryId: 'household', unit: '300 ml', price: 95, mrp: 110, image: productImages['harpic.jpg'], rating: 4.3, inStock: true, stockQty: 35, tags: ['fragrance', 'fresh', 'under99'], discount: 14 },
+  { id: 'kitchen-towels-2rolls', name: 'Kitchen Towels', slug: 'kitchen-towels-2rolls', categoryId: 'household', unit: '2 rolls', price: 65, mrp: 75, image: productImages['surf-excel.jpg'], rating: 4.0, inStock: true, stockQty: 50, tags: ['absorbent', 'kitchen', 'under99'], discount: 13 },
+
+  // More Baby Care
+  { id: 'baby-oil-200ml', name: 'Baby Oil', slug: 'baby-oil-200ml', categoryId: 'baby-care', unit: '200 ml', price: 125, mrp: 140, image: productImages['baby-wipes.jpg'], rating: 4.5, inStock: true, stockQty: 30, tags: ['gentle', 'moisturizing'], discount: 11 },
+  { id: 'baby-powder-200g', name: 'Baby Powder', slug: 'baby-powder-200g', categoryId: 'baby-care', unit: '200 g', price: 85, mrp: 95, image: productImages['baby-wipes.jpg'], rating: 4.4, inStock: true, stockQty: 35, tags: ['soft', 'fragrant', 'under99'], discount: 11 },
+  { id: 'baby-shampoo-200ml', name: 'Baby Shampoo', slug: 'baby-shampoo-200ml', categoryId: 'baby-care', unit: '200 ml', price: 145, mrp: 165, image: productImages['baby-wipes.jpg'], rating: 4.6, inStock: true, stockQty: 25, tags: ['tear-free', 'gentle'], discount: 12 },
+  { id: 'baby-soap-75g', name: 'Baby Soap', slug: 'baby-soap-75g', categoryId: 'baby-care', unit: '75 g', price: 45, mrp: 52, image: productImages['baby-wipes.jpg'], rating: 4.3, inStock: true, stockQty: 40, tags: ['mild', 'gentle', 'under99'], discount: 13 },
+
+  // More Bakery Items
+  { id: 'cake-rusk-200g', name: 'Cake Rusk', slug: 'cake-rusk-200g', categoryId: 'bakery', unit: '200 g', price: 65, mrp: 75, image: productImages['brown-bread.jpg'], rating: 4.2, inStock: true, stockQty: 45, isVegetarian: true, tags: ['crispy', 'tea-time', 'under99'], discount: 13 },
+  { id: 'pav-bread-6pcs', name: 'Pav Bread', slug: 'pav-bread-6pcs', categoryId: 'bakery', unit: '6 pcs', price: 25, mrp: 30, image: productImages['britannia-bread.jpg'], rating: 4.1, inStock: true, stockQty: 60, isVegetarian: true, tags: ['soft', 'fresh', 'under99'], discount: 17 },
+  { id: 'cookies-250g', name: 'Butter Cookies', slug: 'cookies-250g', categoryId: 'bakery', unit: '250 g', price: 85, mrp: 95, image: productImages['good-day.jpg'], rating: 4.4, inStock: true, stockQty: 40, isVegetarian: true, tags: ['sweet', 'crispy', 'under99'], discount: 11 },
+
+  // More Breakfast Items
+  { id: 'oats-500g', name: 'Rolled Oats', slug: 'oats-500g', categoryId: 'breakfast', unit: '500 g', price: 125, mrp: 140, image: productImages['corn-flakes.jpg'], rating: 4.5, inStock: true, stockQty: 35, isVegetarian: true, tags: ['healthy', 'fiber'], discount: 11 },
+  { id: 'muesli-500g', name: 'Mixed Fruit Muesli', slug: 'muesli-500g', categoryId: 'breakfast', unit: '500 g', price: 185, mrp: 210, image: productImages['corn-flakes.jpg'], rating: 4.4, inStock: true, stockQty: 30, isVegetarian: true, tags: ['healthy', 'fruity'], discount: 12 },
+  { id: 'chocolate-spread-350g', name: 'Chocolate Spread', slug: 'chocolate-spread-350g', categoryId: 'breakfast', unit: '350 g', price: 165, mrp: 185, image: productImages['peanut-butter.jpg'], rating: 4.6, inStock: true, stockQty: 25, isVegetarian: true, tags: ['sweet', 'creamy'], discount: 11 },
+
   // Frozen & Ready-to-Cook
   { id: 'frozen-peas-1kg', name: 'Frozen Green Peas', slug: 'frozen-peas-1kg', categoryId: 'frozen', unit: '1 kg', price: 85, mrp: 95, image: productImages['frozen-peas.jpg'], rating: 4.2, inStock: true, stockQty: 40, isVegetarian: true, tags: ['frozen', 'vegetable', 'under99'], discount: 11 },
   { id: 'ready-samosas-12pcs', name: 'Ready Samosas', slug: 'ready-samosas-12pcs', categoryId: 'frozen', unit: '12 pcs', price: 120, mrp: 135, image: productImages['samosas.jpg'], rating: 4.4, inStock: true, stockQty: 30, isVegetarian: true, tags: ['ready-to-cook', 'snack'], discount: 11 },
+  { id: 'frozen-prawns-500g', name: 'Frozen Prawns', slug: 'frozen-prawns-500g', categoryId: 'frozen', unit: '500 g', price: 285, mrp: 315, image: productImages['prawns.jpg'], rating: 4.3, inStock: true, stockQty: 20, tags: ['seafood', 'frozen'], discount: 10 },
+  { id: 'ready-parathas-5pcs', name: 'Ready Parathas', slug: 'ready-parathas-5pcs', categoryId: 'frozen', unit: '5 pcs', price: 95, mrp: 110, image: productImages['britannia-bread.jpg'], rating: 4.2, inStock: true, stockQty: 35, isVegetarian: true, tags: ['ready-to-cook', 'under99'], discount: 14 },
 ];
 
 export const coupons: Coupon[] = [
