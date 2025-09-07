@@ -136,6 +136,31 @@ import toiletPaperImg from './products/toilet-paper.jpg';
 // Additional Baby Care
 import babyFormulaImg from './products/baby-formula.jpg';
 
+// Bakery items
+import croissantImg from './products/croissant.jpg';
+import whiteBreadImg from './products/white-bread.jpg';
+import blueberryMuffinImg from './products/blueberry-muffin.jpg';
+import chocolateCakeImg from './products/chocolate-cake.jpg';
+import donutsImg from './products/donuts.jpg';
+import danishPastryImg from './products/danish-pastry.jpg';
+import bagelImg from './products/bagel.jpg';
+import pitaBreadImg from './products/pita-bread.jpg';
+
+// Additional Meat & Seafood
+import chickenBreastImg from './products/chicken-breast.jpg';
+import muttonImg from './products/mutton.jpg';
+import fishFilletImg from './products/fish-fillet.jpg';
+import salmonImg from './products/salmon.jpg';
+import crabImg from './products/crab.jpg';
+
+// Additional Personal Care
+import faceWashImg from './products/face-wash.jpg';
+import moisturizerImg from './products/moisturizer.jpg';
+import sunscreenImg from './products/sunscreen.jpg';
+import bodyLotionImg from './products/body-lotion.jpg';
+import conditionerImg from './products/conditioner.jpg';
+import mouthwashImg from './products/mouthwash.jpg';
+
 export const productImages = {
   // Fruits & Vegetables
   'tomatoes.jpg': tomatoesImg,
@@ -274,4 +299,29 @@ export const productImages = {
 
   // Additional Baby Care
   'baby-formula.jpg': babyFormulaImg,
+
+  // Bakery items
+  'croissant.jpg': croissantImg,
+  'white-bread.jpg': whiteBreadImg,
+  'blueberry-muffin.jpg': blueberryMuffinImg,
+  'chocolate-cake.jpg': chocolateCakeImg,
+  'donuts.jpg': donutsImg,
+  'danish-pastry.jpg': danishPastryImg,
+  'bagel.jpg': bagelImg,
+  'pita-bread.jpg': pitaBreadImg,
+
+  // Additional Meat & Seafood
+  'chicken-breast.jpg': chickenBreastImg,
+  'mutton.jpg': muttonImg,
+  'fish-fillet.jpg': fishFilletImg,
+  'salmon.jpg': salmonImg,
+  'crab.jpg': crabImg,
+
+  // Additional Personal Care
+  'face-wash.jpg': faceWashImg,
+  'moisturizer.jpg': moisturizerImg,
+  'sunscreen.jpg': sunscreenImg,
+  'body-lotion.jpg': bodyLotionImg,
+  'conditioner.jpg': conditionerImg,
+  'mouthwash.jpg': mouthwashImg,
 };
