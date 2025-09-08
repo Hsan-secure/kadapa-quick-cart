@@ -1,13 +1,40 @@
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+// In Lovable, Supabase credentials are automatically injected when you connect Supabase
+// Check multiple possible environment variable names
+const supabaseUrl = 
+  import.meta.env.VITE_SUPABASE_URL || 
+  import.meta.env.SUPABASE_URL ||
+  import.meta.env.PUBLIC_SUPABASE_URL ||
+  // Temporary placeholder - will be replaced when Supabase is properly connected
+  'https://placeholder.supabase.co';
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error('Missing Supabase environment variables');
-}
+const supabaseAnonKey = 
+  import.meta.env.VITE_SUPABASE_ANON_KEY || 
+  import.meta.env.SUPABASE_ANON_KEY ||
+  import.meta.env.PUBLIC_SUPABASE_ANON_KEY ||
+  // Temporary placeholder
+  'placeholder-key';
 
+// Debug logging to help diagnose the issue
+console.log('=== SUPABASE CONFIGURATION DEBUG ===');
+console.log('Available environment variables:');
+Object.keys(import.meta.env).forEach(key => {
+  console.log(`${key}:`, key.includes('SUPABASE') ? import.meta.env[key] : '[hidden]');
+});
+console.log('Selected URL:', supabaseUrl);
+console.log('Key available:', supabaseAnonKey !== 'placeholder-key');
+console.log('=== END DEBUG ===');
+
+// Always create a client to prevent crashes
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
+// Export configuration status
+export const supabaseConfig = {
+  url: supabaseUrl,
+  isConfigured: !supabaseUrl.includes('placeholder') && supabaseAnonKey !== 'placeholder-key',
+  isPlaceholder: supabaseUrl.includes('placeholder')
+};
 
 export type Database = {
   public: {

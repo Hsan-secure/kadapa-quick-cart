@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User, Session } from '@supabase/supabase-js';
-import { supabase } from '@/lib/supabase';
+import { supabase, supabaseConfig } from '@/lib/supabase';
 import { toast } from '@/hooks/use-toast';
 
 interface AuthState {
@@ -98,6 +98,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signInWithOTP = async (phone: string) => {
     try {
+      // Check if Supabase is properly configured
+      if (!supabaseConfig.isConfigured) {
+        throw new Error('Supabase not configured. Please check your environment variables.');
+      }
+
       // Format phone number to E.164 format (+91XXXXXXXXXX)
       const formattedPhone = phone.startsWith('+91') ? phone : `+91${phone}`;
       
@@ -115,7 +120,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       console.error('OTP send error:', error);
       toast({
         title: "Error",
-        description: error.message || "Failed to send OTP",
+        description: error.message || "Failed to send OTP. Please ensure Supabase is properly configured.",
         variant: "destructive",
       });
       throw error;

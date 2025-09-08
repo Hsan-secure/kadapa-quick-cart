@@ -11,6 +11,7 @@ import { useAuth } from '@/context/AuthContext';
 import { categories } from '@/data/products';
 import { HeaderChatButton } from './HeaderChatButton';
 import { AuthDialog } from './auth/AuthDialog';
+import { SupabaseStatus } from './SupabaseStatus';
 
 export function Header() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -30,6 +31,11 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/90 border-b shadow-sm">
+      {/* Supabase Configuration Alert */}
+      <div className="container mx-auto px-4 pt-4">
+        <SupabaseStatus />
+      </div>
+      
       {/* Delivery Promise Banner */}
       <div className="bg-gradient-to-r from-primary to-secondary text-white py-2">
         <div className="container mx-auto px-4">
