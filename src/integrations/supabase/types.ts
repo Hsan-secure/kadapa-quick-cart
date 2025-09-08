@@ -14,7 +14,119 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      orders: {
+        Row: {
+          address: Json
+          created_at: string | null
+          delivery_fee: number | null
+          discount: number | null
+          eta_minutes: number | null
+          gst: number | null
+          id: string
+          items: Json
+          payment_method: string
+          payment_ref: string | null
+          status: string
+          subtotal: number
+          total: number
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          address: Json
+          created_at?: string | null
+          delivery_fee?: number | null
+          discount?: number | null
+          eta_minutes?: number | null
+          gst?: number | null
+          id?: string
+          items: Json
+          payment_method: string
+          payment_ref?: string | null
+          status?: string
+          subtotal: number
+          total: number
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          address?: Json
+          created_at?: string | null
+          delivery_fee?: number | null
+          discount?: number | null
+          eta_minutes?: number | null
+          gst?: number | null
+          id?: string
+          items?: Json
+          payment_method?: string
+          payment_ref?: string | null
+          status?: string
+          subtotal?: number
+          total?: number
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string | null
+          id: string
+          phone: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id: string
+          phone: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          phone?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      transactions: {
+        Row: {
+          amount: number
+          created_at: string | null
+          id: string
+          order_id: string
+          payment_method: string
+          status: string
+          transaction_id: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string | null
+          id?: string
+          order_id: string
+          payment_method: string
+          status?: string
+          transaction_id: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string | null
+          id?: string
+          order_id?: string
+          payment_method?: string
+          status?: string
+          transaction_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "transactions_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
