@@ -98,25 +98,28 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signInWithOTP = async (phone: string) => {
     try {
-
       // Format phone number to E.164 format (+91XXXXXXXXXX)
       const formattedPhone = phone.startsWith('+91') ? phone : `+91${phone}`;
       
-      const { error } = await supabase.auth.signInWithOtp({
+      console.log('Sending OTP to:', formattedPhone);
+      
+      const { data, error } = await supabase.auth.signInWithOtp({
         phone: formattedPhone,
       });
+
+      console.log('OTP Response:', { data, error });
 
       if (error) throw error;
 
       toast({
         title: "OTP Sent",
-        description: `Verification code sent to ${phone}`,
+        description: `Verification code sent to ${formattedPhone}. Check your SMS messages.`,
       });
     } catch (error: any) {
       console.error('OTP send error:', error);
       toast({
         title: "Error",
-        description: error.message || "Failed to send OTP. Please ensure Supabase is properly configured.",
+        description: error.message || "Failed to send OTP. Please check your phone number and try again.",
         variant: "destructive",
       });
       throw error;
