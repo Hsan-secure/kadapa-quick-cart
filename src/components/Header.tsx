@@ -1,19 +1,24 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Search, ShoppingCart, Menu, X, MapPin, Clock } from 'lucide-react';
+import { Search, ShoppingCart, Menu, X, MapPin, Clock, User, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from '@/components/ui/sheet';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { useCart } from '@/context/CartContext';
+import { useAuth } from '@/context/AuthContext';
 import { categories } from '@/data/products';
 import { HeaderChatButton } from './HeaderChatButton';
+import { AuthDialog } from './auth/AuthDialog';
 
 export function Header() {
   const [searchQuery, setSearchQuery] = useState('');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [authDialogOpen, setAuthDialogOpen] = useState(false);
   const navigate = useNavigate();
   const { getItemCount } = useCart();
+  const { user, profile, signOut, loading } = useAuth();
   const itemCount = getItemCount();
 
   const handleSearch = (e: React.FormEvent) => {
@@ -76,6 +81,42 @@ export function Header() {
           <div className="flex items-center space-x-2">
             {/* Order Help Chat */}
             <HeaderChatButton />
+            
+            {/* Auth Section */}
+            {!loading && (
+              user ? (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" size="icon" className="relative">
+                      <User className="h-5 w-5" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem className="flex flex-col items-start">
+                      <span className="font-medium">My Account</span>
+                      <span className="text-xs text-muted-foreground">
+                        {profile?.phone || 'Loading...'}
+                      </span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={signOut}>
+                      <LogOut className="mr-2 h-4 w-4" />
+                      Logout
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              ) : (
+                <Button 
+                  variant="ghost" 
+                  size="sm"
+                  onClick={() => setAuthDialogOpen(true)}
+                  className="hidden sm:flex"
+                >
+                  <User className="mr-2 h-4 w-4" />
+                  Login
+                </Button>
+              )
+            )}
+            
             {/* Search - Mobile */}
             <Button
               variant="ghost"
@@ -137,6 +178,22 @@ export function Header() {
                   </div>
                 </form>
 
+                {/* Mobile Auth */}
+                {!loading && !user && (
+                  <div className="mb-6">
+                    <Button 
+                      onClick={() => {
+                        setMobileMenuOpen(false);
+                        setAuthDialogOpen(true);
+                      }}
+                      className="w-full"
+                    >
+                      <User className="mr-2 h-4 w-4" />
+                      Login
+                    </Button>
+                  </div>
+                )}
+
                 {/* Categories */}
                 <div className="space-y-1">
                   <h3 className="font-semibold text-sm text-muted-foreground uppercase tracking-wide mb-3">
@@ -183,6 +240,9 @@ export function Header() {
           </div>
         </div>
       </div>
+
+      {/* Auth Dialog */}
+      <AuthDialog open={authDialogOpen} onOpenChange={setAuthDialogOpen} />
     </header>
   );
 }

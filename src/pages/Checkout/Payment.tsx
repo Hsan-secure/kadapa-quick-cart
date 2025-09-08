@@ -8,15 +8,19 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { useCart } from '@/context/CartContext';
+import { useAuth } from '@/context/AuthContext';
+import { supabase } from '@/lib/supabase';
 import { toast } from '@/hooks/use-toast';
 
 export default function CheckoutPayment() {
   const navigate = useNavigate();
   const { state, getCartTotal, createOrder } = useCart();
+  const { user } = useAuth();
   const [paymentMethod, setPaymentMethod] = useState<'COD' | 'PhonePe'>('COD');
   const [isProcessing, setIsProcessing] = useState(false);
   const [showPhonePeModal, setShowPhonePeModal] = useState(false);
   const [phonepeStatus, setPhonepeStatus] = useState<'pending' | 'success' | 'failed'>('pending');
+  const [transactionId, setTransactionId] = useState<string>('');
 
   const selectedAddressId = sessionStorage.getItem('selectedAddressId');
   const selectedAddress = state.addresses.find(addr => addr.id === selectedAddressId);
@@ -28,32 +32,101 @@ export default function CheckoutPayment() {
   }
 
   const handlePayment = async () => {
+    if (!user) {
+      toast({
+        title: "Please login first",
+        description: "You need to be logged in to place an order",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsProcessing(true);
 
     try {
       if (paymentMethod === 'PhonePe') {
+        // Create PhonePe payment
+        const orderId = `QD-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
+        
+        const { data, error } = await supabase.functions.invoke('create-phonepe-payment', {
+          body: {
+            amount: Math.round(total * 100), // Convert to paise
+            orderId: orderId,
+            items: state.items,
+            address: selectedAddress,
+          }
+        });
+
+        if (error) throw error;
+
+        setTransactionId(data.transactionId);
         setShowPhonePeModal(true);
         
-        // Simulate PhonePe payment process
-        setTimeout(() => {
-          // Randomly succeed or fail (80% success rate)
-          const success = Math.random() > 0.2;
-          setPhonepeStatus(success ? 'success' : 'failed');
-          
-          if (success) {
-            setTimeout(() => {
-              completeOrder('PhonePe', `QP-${Date.now()}-${Math.random().toString(36).substr(2, 6).toUpperCase()}`);
-              setShowPhonePeModal(false);
-            }, 2000);
-          }
-        }, 3000);
+        // Open PhonePe payment URL
+        if (data.paymentUrl) {
+          window.location.href = data.paymentUrl;
+        }
+
+        // Start polling for payment status
+        pollPaymentStatus(data.transactionId, orderId);
       } else {
         // COD - direct order creation
         completeOrder('COD');
       }
+    } catch (error: any) {
+      console.error('Payment error:', error);
+      toast({
+        title: "Payment Error",
+        description: error.message || "Failed to process payment",
+        variant: "destructive",
+      });
     } finally {
       setIsProcessing(false);
     }
+  };
+
+  const pollPaymentStatus = async (txnId: string, orderId: string) => {
+    // Poll every 3 seconds for 2 minutes
+    const maxAttempts = 40;
+    let attempts = 0;
+
+    const poll = async () => {
+      try {
+        const { data, error } = await supabase.functions.invoke('verify-phonepe-payment', {
+          body: {
+            transactionId: txnId,
+            orderId: orderId,
+          }
+        });
+
+        if (error) throw error;
+
+        if (data.status === 'SUCCESS') {
+          setPhonepeStatus('success');
+          setTimeout(() => {
+            completeOrder('PhonePe', txnId);
+            setShowPhonePeModal(false);
+          }, 2000);
+        } else if (data.status === 'FAILED') {
+          setPhonepeStatus('failed');
+        } else if (attempts < maxAttempts) {
+          attempts++;
+          setTimeout(poll, 3000);
+        } else {
+          setPhonepeStatus('failed');
+        }
+      } catch (error) {
+        console.error('Status check error:', error);
+        if (attempts < maxAttempts) {
+          attempts++;
+          setTimeout(poll, 3000);
+        } else {
+          setPhonepeStatus('failed');
+        }
+      }
+    };
+
+    setTimeout(poll, 3000);
   };
 
   const completeOrder = (method: 'COD' | 'PhonePe', paymentRef?: string) => {
@@ -86,15 +159,33 @@ export default function CheckoutPayment() {
     navigate(`/order/${order.id}`);
   };
 
-  const retryPhonePePayment = () => {
+  const retryPhonePePayment = async () => {
+    if (!transactionId) return;
+    
     setPhonepeStatus('pending');
-    setTimeout(() => {
-      setPhonepeStatus('success');
-      setTimeout(() => {
-        completeOrder('PhonePe', `QP-${Date.now()}-${Math.random().toString(36).substr(2, 6).toUpperCase()}`);
-        setShowPhonePeModal(false);
-      }, 2000);
-    }, 2000);
+    
+    try {
+      const { data, error } = await supabase.functions.invoke('verify-phonepe-payment', {
+        body: {
+          transactionId: transactionId,
+          orderId: selectedAddress ? `QD-${Date.now()}` : '',
+        }
+      });
+
+      if (error) throw error;
+
+      if (data.status === 'SUCCESS') {
+        setPhonepeStatus('success');
+        setTimeout(() => {
+          completeOrder('PhonePe', transactionId);
+          setShowPhonePeModal(false);
+        }, 2000);
+      } else {
+        setPhonepeStatus('failed');
+      }
+    } catch (error) {
+      setPhonepeStatus('failed');
+    }
   };
 
   return (
@@ -269,10 +360,10 @@ export default function CheckoutPayment() {
                 </p>
                 <div className="bg-muted p-4 rounded-lg">
                   <p className="text-sm">
-                    UPI ID: quickdelivery@paytm
+                    UPI ID: 6302829644@ybl
                   </p>
                   <p className="text-xs text-muted-foreground mt-1">
-                    Use any UPI app to complete payment
+                    Complete payment using any UPI app
                   </p>
                 </div>
               </div>

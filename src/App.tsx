@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { CartProvider } from "./context/CartContext";
+import { AuthProvider } from "./context/AuthContext";
 import { Header } from "./components/Header";
 import { Footer } from "./components/Footer";
 import { ChatAssistant } from "./components/ChatAssistant";
@@ -21,6 +22,7 @@ import FAQ from "./pages/FAQ";
 import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
 import Refund from "./pages/Refund";
+import PaymentCallback from "./pages/PaymentCallback";
 
 const queryClient = new QueryClient();
 
@@ -36,6 +38,7 @@ function AppContent() {
         <Route path="/cart" element={<Cart />} />
         <Route path="/checkout/address" element={<CheckoutAddress />} />
         <Route path="/checkout/payment" element={<CheckoutPayment />} />
+        <Route path="/payment-callback" element={<PaymentCallback />} />
         <Route path="/order/:orderId" element={<OrderTracking />} />
         <Route path="/about" element={<About />} />
         <Route path="/faq" element={<FAQ />} />
@@ -52,15 +55,17 @@ function AppContent() {
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <CartProvider>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <AppContent />
-        </BrowserRouter>
-      </TooltipProvider>
-    </CartProvider>
+    <AuthProvider>
+      <CartProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <AppContent />
+          </BrowserRouter>
+        </TooltipProvider>
+      </CartProvider>
+    </AuthProvider>
   </QueryClientProvider>
 );
 
