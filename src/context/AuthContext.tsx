@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User, Session } from '@supabase/supabase-js';
-import { supabase, supabaseConfig } from '@/lib/supabase';
+import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
 
 interface AuthState {
@@ -98,10 +98,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signInWithOTP = async (phone: string) => {
     try {
-      // Check if Supabase is properly configured
-      if (!supabaseConfig.isConfigured) {
-        throw new Error('Supabase not configured. Please check your environment variables.');
-      }
 
       // Format phone number to E.164 format (+91XXXXXXXXXX)
       const formattedPhone = phone.startsWith('+91') ? phone : `+91${phone}`;
