@@ -103,18 +103,30 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       
       console.log('Sending OTP to:', formattedPhone);
       
-      const { data, error } = await supabase.auth.signInWithOtp({
-        phone: formattedPhone,
+      // Call custom edge function to send OTP
+      const { data, error } = await supabase.functions.invoke('send-otp', {
+        body: { phone: formattedPhone }
       });
 
       console.log('OTP Response:', { data, error });
 
       if (error) throw error;
+      if (!data?.success) throw new Error(data?.error || 'Failed to send OTP');
 
       toast({
         title: "OTP Sent",
         description: `Verification code sent to ${formattedPhone}. Check your SMS messages.`,
       });
+      
+      // In demo mode, show the OTP in console/toast for testing
+      if (data?.debug_otp) {
+        console.log('Demo OTP:', data.debug_otp);
+        toast({
+          title: "Demo Mode",
+          description: `Your OTP is: ${data.debug_otp}`,
+          variant: "default",
+        });
+      }
     } catch (error: any) {
       console.error('OTP send error:', error);
       toast({
@@ -130,33 +142,29 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       const formattedPhone = phone.startsWith('+91') ? phone : `+91${phone}`;
       
-      const { data, error } = await supabase.auth.verifyOtp({
-        phone: formattedPhone,
-        token: otp,
-        type: 'sms'
+      // Call custom edge function to verify OTP
+      const { data, error } = await supabase.functions.invoke('verify-otp', {
+        body: { phone: formattedPhone, otp }
       });
 
+      console.log('OTP Verification Response:', { data, error });
+
       if (error) throw error;
+      if (!data?.success) throw new Error(data?.error || 'Invalid OTP');
 
-      if (data.user) {
-        // Create or update profile
-        const { error: profileError } = await supabase
-          .from('profiles')
-          .upsert({
-            id: data.user.id,
-            phone: formattedPhone,
-            updated_at: new Date().toISOString(),
-          });
-
-        if (profileError) {
-          console.error('Profile creation error:', profileError);
-        }
-
-        toast({
-          title: "Welcome!",
-          description: "Successfully logged in",
-        });
+      // The edge function handles user creation and profile setup
+      // Force refresh the auth state
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
+        setSession(session);
+        setUser(session.user);
+        await fetchProfile(session.user.id);
       }
+
+      toast({
+        title: "Welcome!",
+        description: "Successfully logged in",
+      });
     } catch (error: any) {
       console.error('OTP verification error:', error);
       toast({

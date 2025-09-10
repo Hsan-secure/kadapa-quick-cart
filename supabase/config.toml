@@ -1,1 +1,13 @@
 project_id = "wrvcrdzzvqntcmoyopkt"
+
+[functions.send-otp]
+verify_jwt = false
+
+[functions.verify-otp]
+verify_jwt = false
+
+[functions.create-phonepe-payment]
+verify_jwt = true
+
+[functions.verify-phonepe-payment]
+verify_jwt = false
