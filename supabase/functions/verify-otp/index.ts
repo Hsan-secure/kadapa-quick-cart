@@ -6,11 +6,6 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-interface VerifyOTPRequest {
-  phone: string;
-  otp: string;
-}
-
 serve(async (req) => {
   // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
@@ -23,15 +18,19 @@ serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
     );
 
-    const { phone, otp }: VerifyOTPRequest = await req.json();
-    
+    const { phone, otp } = await req.json();
+
+    if (!phone || !otp) {
+      throw new Error("Phone number and OTP are required");
+    }
+
     // Format phone number
     const formattedPhone = phone.startsWith('+91') ? phone : `+91${phone}`;
     
     console.log('Verifying OTP for:', formattedPhone);
 
-    // Find valid OTP
-    const { data: otpRecord, error: otpError } = await supabaseClient
+    // Check OTP validity
+    const { data: otpData, error: otpError } = await supabaseClient
       .from('otp_codes')
       .select('*')
       .eq('phone', formattedPhone)
@@ -40,84 +39,88 @@ serve(async (req) => {
       .gt('expires_at', new Date().toISOString())
       .order('created_at', { ascending: false })
       .limit(1)
-      .single();
+      .maybeSingle();
 
-    if (otpError || !otpRecord) {
-      return new Response(
-        JSON.stringify({ 
-          success: false, 
-          error: "Invalid or expired OTP" 
-        }),
-        {
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-          status: 400,
-        }
-      );
+    if (otpError || !otpData) {
+      console.error('OTP verification failed:', otpError);
+      throw new Error("Invalid or expired OTP");
     }
 
     // Mark OTP as verified
     await supabaseClient
       .from('otp_codes')
       .update({ verified: true })
-      .eq('id', otpRecord.id);
+      .eq('id', otpData.id);
 
-    // Check if user already exists in profiles
+    // Create or get existing user by phone
+    let user;
+    
+    // First, try to find existing user with this phone
     const { data: existingProfile } = await supabaseClient
       .from('profiles')
       .select('*')
       .eq('phone', formattedPhone)
-      .single();
+      .maybeSingle();
 
-    let userId: string;
-    
     if (existingProfile) {
-      // User exists, use existing ID
-      userId = existingProfile.id;
+      // Get the user from auth table
+      const { data: authUser } = await supabaseClient.auth.admin.getUserById(existingProfile.id);
+      user = authUser.user;
     } else {
-      // Create new user via Supabase Auth
-      const { data: authData, error: authError } = await supabaseClient.auth.admin.createUser({
+      // Create new user in auth table
+      const { data: newUser, error: createError } = await supabaseClient.auth.admin.createUser({
         phone: formattedPhone,
-        phone_confirmed_at: new Date().toISOString(),
+        phone_confirm: true,
         user_metadata: { phone: formattedPhone }
       });
 
-      if (authError || !authData.user) {
-        throw new Error('Failed to create user account');
+      if (createError) {
+        console.error('User creation error:', createError);
+        throw createError;
       }
 
-      userId = authData.user.id;
+      user = newUser.user;
 
-      // Create profile
-      await supabaseClient
+      // Create profile for the new user
+      const { error: profileError } = await supabaseClient
         .from('profiles')
         .insert({
-          id: userId,
-          phone: formattedPhone
+          id: user.id,
+          phone: formattedPhone,
         });
+
+      if (profileError) {
+        console.error('Profile creation error:', profileError);
+      }
     }
 
     // Generate session token
-    const { data: sessionData, error: sessionError } = await supabaseClient.auth.admin.generateLink({
+    const { data: tokenData, error: tokenError } = await supabaseClient.auth.admin.generateLink({
       type: 'magiclink',
-      email: `user_${userId}@temp.com`, // Temp email for phone-only auth
-      options: {
-        redirectTo: `${req.headers.get("origin")}/`
-      }
+      email: `${user.id}@temp.com`,
     });
 
-    if (sessionError) {
-      throw sessionError;
+    if (tokenError) {
+      console.error('Token generation error:', tokenError);
+      throw tokenError;
     }
+
+    // Clean up expired OTPs
+    await supabaseClient
+      .from('otp_codes')
+      .delete()
+      .lt('expires_at', new Date().toISOString());
 
     return new Response(
       JSON.stringify({
         success: true,
-        message: "OTP verified successfully",
         user: {
-          id: userId,
-          phone: formattedPhone
+          id: user.id,
+          phone: formattedPhone,
         },
-        session: sessionData
+        access_token: tokenData.properties?.access_token,
+        refresh_token: tokenData.properties?.refresh_token,
+        message: "OTP verified successfully"
       }),
       {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -126,7 +129,7 @@ serve(async (req) => {
     );
 
   } catch (error) {
-    console.error('OTP verification error:', error);
+    console.error('Verify OTP error:', error);
     return new Response(
       JSON.stringify({ 
         success: false, 
