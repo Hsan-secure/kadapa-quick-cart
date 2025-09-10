@@ -53,54 +53,69 @@ serve(async (req) => {
       throw otpError;
     }
 
-    // Send SMS using your SMS provider
-    const smsApiKey = Deno.env.get('SMS_API_KEY');
+    // Send SMS using Twilio
+    const twilioAccountSid = Deno.env.get('TWILIO_ACCOUNT_SID');
+    const twilioAuthToken = Deno.env.get('TWILIO_AUTH_TOKEN');
+    const twilioPhoneNumber = Deno.env.get('TWILIO_PHONE_NUMBER');
     
-    if (smsApiKey) {
-      // Example: Replace with your actual SMS provider API
-      // This is a sample implementation - you'll need to adapt for your SMS provider
+    if (twilioAccountSid && twilioAuthToken && twilioPhoneNumber) {
+      // Send real SMS using Twilio
       const smsMessage = `Your QuickDelivery OTP is: ${otpCode}. Valid for 5 minutes.`;
       
-      console.log('Sending SMS:', { phone: formattedPhone, message: smsMessage });
+      console.log('Sending SMS via Twilio:', { phone: formattedPhone, message: smsMessage });
       
-      // For demo purposes, we'll log the OTP instead of sending SMS
-      // In production, replace this with actual SMS API call
-      console.log(`OTP for ${formattedPhone}: ${otpCode}`);
+      const twilioUrl = `https://api.twilio.com/2010-04-01/Accounts/${twilioAccountSid}/Messages.json`;
+      const credentials = btoa(`${twilioAccountSid}:${twilioAuthToken}`);
       
-      // Example SMS API call (uncomment and modify for your provider):
-      /*
-      const smsResponse = await fetch('https://your-sms-provider.com/send', {
+      const smsResponse = await fetch(twilioUrl, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${smsApiKey}`,
-          'Content-Type': 'application/json',
+          'Authorization': `Basic ${credentials}`,
+          'Content-Type': 'application/x-www-form-urlencoded',
         },
-        body: JSON.stringify({
-          to: formattedPhone,
-          message: smsMessage,
-        })
+        body: new URLSearchParams({
+          From: twilioPhoneNumber,
+          To: formattedPhone,
+          Body: smsMessage,
+        }).toString()
       });
       
       if (!smsResponse.ok) {
-        throw new Error('Failed to send SMS');
+        const errorData = await smsResponse.text();
+        console.error('Twilio SMS error:', errorData);
+        throw new Error('Failed to send SMS via Twilio');
       }
-      */
+      
+      const smsData = await smsResponse.json();
+      console.log('SMS sent successfully:', smsData.sid);
+      
+      return new Response(
+        JSON.stringify({
+          success: true,
+          message: `OTP sent to ${formattedPhone}`,
+        }),
+        {
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+          status: 200,
+        }
+      );
     } else {
+      // Demo mode fallback
       console.log(`Demo mode - OTP for ${formattedPhone}: ${otpCode}`);
+      
+      return new Response(
+        JSON.stringify({
+          success: true,
+          message: `OTP sent to ${formattedPhone}`,
+          // In demo mode, return the OTP for testing
+          otp: otpCode
+        }),
+        {
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+          status: 200,
+        }
+      );
     }
-
-    return new Response(
-      JSON.stringify({
-        success: true,
-        message: `OTP sent to ${formattedPhone}`,
-        // In demo mode, return the OTP for testing
-        ...(smsApiKey ? {} : { otp: otpCode })
-      }),
-      {
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-        status: 200,
-      }
-    );
 
   } catch (error) {
     console.error('Send OTP error:', error);
