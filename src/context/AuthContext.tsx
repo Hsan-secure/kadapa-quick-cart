@@ -119,12 +119,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       });
       
       // In demo mode, show the OTP in console/toast for testing
-      if (data?.debug_otp) {
-        console.log('Demo OTP:', data.debug_otp);
+      if (data?.otp) {
+        console.log('Demo OTP:', data.otp);
         toast({
-          title: "Demo Mode",
-          description: `Your OTP is: ${data.debug_otp}`,
+          title: "Demo Mode - OTP Generated",
+          description: `Your demo OTP is: ${data.otp}`,
           variant: "default",
+          duration: 10000,
         });
       }
     } catch (error: any) {
