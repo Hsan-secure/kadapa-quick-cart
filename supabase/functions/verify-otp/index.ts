@@ -55,24 +55,22 @@ serve(async (req) => {
     // Create or get existing user by phone
     let user;
     
-    // First, try to find existing user with this phone
-    const { data: existingProfile } = await supabaseClient
-      .from('profiles')
-      .select('*')
-      .eq('phone', formattedPhone)
-      .maybeSingle();
-
-    if (existingProfile) {
-      // Get the user from auth table
-      const { data: authUser } = await supabaseClient.auth.admin.getUserById(existingProfile.id);
-      user = authUser.user;
-    } else {
-      // Check if user exists in auth by phone first
-      const { data: authUsers } = await supabaseClient.auth.admin.listUsers();
-      const existingAuthUser = authUsers.users.find(u => u.phone === formattedPhone);
+    // First check if user exists in auth by phone
+    const { data: authUsers } = await supabaseClient.auth.admin.listUsers();
+    const existingAuthUser = authUsers.users.find(u => u.phone === formattedPhone);
+    
+    if (existingAuthUser) {
+      console.log('Found existing user in auth:', existingAuthUser.id);
+      user = existingAuthUser;
       
-      if (existingAuthUser) {
-        user = existingAuthUser;
+      // Ensure profile exists for this user
+      const { data: existingProfile } = await supabaseClient
+        .from('profiles')
+        .select('*')
+        .eq('id', user.id)
+        .maybeSingle();
+        
+      if (!existingProfile) {
         // Create profile for existing auth user
         const { error: profileError } = await supabaseClient
           .from('profiles')
@@ -84,32 +82,33 @@ serve(async (req) => {
         if (profileError && profileError.code !== '23505') { // Ignore duplicate key error
           console.error('Profile creation error:', profileError);
         }
-      } else {
-        // Create new user in auth table
-        const { data: newUser, error: createError } = await supabaseClient.auth.admin.createUser({
+      }
+    } else {
+      // Create new user in auth table
+      console.log('Creating new user for phone:', formattedPhone);
+      const { data: newUser, error: createError } = await supabaseClient.auth.admin.createUser({
+        phone: formattedPhone,
+        phone_confirm: true,
+        user_metadata: { phone: formattedPhone }
+      });
+
+      if (createError) {
+        console.error('User creation error:', createError);
+        throw createError;
+      }
+
+      user = newUser.user;
+
+      // Create profile for the new user
+      const { error: profileError } = await supabaseClient
+        .from('profiles')
+        .insert({
+          id: user.id,
           phone: formattedPhone,
-          phone_confirm: true,
-          user_metadata: { phone: formattedPhone }
         });
 
-        if (createError) {
-          console.error('User creation error:', createError);
-          throw createError;
-        }
-
-        user = newUser.user;
-
-        // Create profile for the new user
-        const { error: profileError } = await supabaseClient
-          .from('profiles')
-          .insert({
-            id: user.id,
-            phone: formattedPhone,
-          });
-
-        if (profileError) {
-          console.error('Profile creation error:', profileError);
-        }
+      if (profileError && profileError.code !== '23505') { // Ignore duplicate key error  
+        console.error('Profile creation error:', profileError);
       }
     }
 
