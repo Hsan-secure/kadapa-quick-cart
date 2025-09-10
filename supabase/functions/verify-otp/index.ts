@@ -99,16 +99,17 @@ serve(async (req) => {
 
         user = newUser.user;
 
-      // Create profile for the new user
-      const { error: profileError } = await supabaseClient
-        .from('profiles')
-        .insert({
-          id: user.id,
-          phone: formattedPhone,
-        });
+        // Create profile for the new user
+        const { error: profileError } = await supabaseClient
+          .from('profiles')
+          .insert({
+            id: user.id,
+            phone: formattedPhone,
+          });
 
-      if (profileError) {
-        console.error('Profile creation error:', profileError);
+        if (profileError) {
+          console.error('Profile creation error:', profileError);
+        }
       }
     }
 
