@@ -10,6 +10,21 @@ import {
 } from 'firebase/auth';
 import { toast } from 'sonner';
 
+// reCAPTCHA Enterprise configuration
+const RECAPTCHA_SITE_KEY = '6LemtMUrAAAAAJc1yvat8jF8k-Iex9FCxaZMU1ew';
+
+// Extend window interface for reCAPTCHA Enterprise
+declare global {
+  interface Window {
+    grecaptcha: {
+      enterprise: {
+        ready: (callback: () => void) => void;
+        execute: (siteKey: string, options: { action: string }) => Promise<string>;
+      };
+    };
+  }
+}
+
 interface AuthState {
   user: User | null;
   loading: boolean;
@@ -44,6 +59,51 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return unsubscribe;
   }, []);
 
+  // Create Enterprise reCAPTCHA verifier
+  const createEnterpriseRecaptchaVerifier = (): Promise<RecaptchaVerifier> => {
+    return new Promise((resolve, reject) => {
+      if (!window.grecaptcha?.enterprise) {
+        reject(new Error('reCAPTCHA Enterprise not loaded'));
+        return;
+      }
+
+      window.grecaptcha.enterprise.ready(async () => {
+        try {
+          // Execute reCAPTCHA Enterprise
+          const token = await window.grecaptcha.enterprise.execute(RECAPTCHA_SITE_KEY, {
+            action: 'LOGIN'
+          });
+
+          console.log('reCAPTCHA Enterprise token generated:', token);
+
+          // Create a custom RecaptchaVerifier that uses the Enterprise token
+          const recaptchaContainer = document.getElementById('recaptcha-container');
+          if (recaptchaContainer) {
+            recaptchaContainer.innerHTML = '';
+          }
+
+          const verifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
+            size: 'invisible',
+            callback: () => {
+              console.log('reCAPTCHA verified with Enterprise token');
+            },
+            'expired-callback': () => {
+              console.log('reCAPTCHA expired');
+            },
+            'error-callback': (error: any) => {
+              console.log('reCAPTCHA error:', error);
+            }
+          });
+
+          resolve(verifier);
+        } catch (error) {
+          console.error('Error generating reCAPTCHA Enterprise token:', error);
+          reject(error);
+        }
+      });
+    });
+  };
+
   const signInWithOTP = async (phone: string): Promise<ConfirmationResult> => {
     console.log('Requesting OTP for phone:', phone);
     
@@ -61,25 +121,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         recaptchaVerifierRef.current = null;
       }
 
-      // Clear the recaptcha container
-      const recaptchaContainer = document.getElementById('recaptcha-container');
-      if (recaptchaContainer) {
-        recaptchaContainer.innerHTML = '';
-      }
-
-      // Create new recaptcha verifier
-      recaptchaVerifierRef.current = new RecaptchaVerifier(auth, 'recaptcha-container', {
-        size: 'invisible',
-        callback: (response: any) => {
-          console.log('reCAPTCHA verified:', response);
-        },
-        'expired-callback': () => {
-          console.log('reCAPTCHA expired');
-        },
-        'error-callback': (error: any) => {
-          console.log('reCAPTCHA error:', error);
-        }
-      });
+      // Create Enterprise reCAPTCHA verifier
+      recaptchaVerifierRef.current = await createEnterpriseRecaptchaVerifier();
 
       const confirmationResult = await signInWithPhoneNumber(auth, formattedPhone, recaptchaVerifierRef.current);
       
@@ -91,13 +134,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       // Handle specific Firebase errors
       if (error.code === 'auth/billing-not-enabled') {
         toast.error('SMS authentication not enabled. Please enable billing in Firebase Console.');
-        // For development, you could implement a fallback here
         throw new Error('SMS authentication requires Firebase billing to be enabled. Please contact support.');
       } else if (error.code === 'auth/project-not-whitelisted') {
         toast.error('Domain not whitelisted for Firebase authentication');
         throw new Error('Authentication not configured for this domain');
       } else if (error.message?.includes('reCAPTCHA')) {
-        toast.error('reCAPTCHA verification failed. Please try again.');
+        toast.error('reCAPTCHA Enterprise verification failed. Please try again.');
         throw new Error('Verification failed. Please refresh and try again.');
       } else {
         toast.error(error.message || 'Failed to send OTP');

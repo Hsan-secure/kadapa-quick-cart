@@ -157,7 +157,7 @@ export function FirebaseAuthDialog({ open, onOpenChange }: FirebaseAuthDialogPro
         <Alert>
           <AlertCircle className="h-4 w-4" />
           <AlertDescription className="text-sm">
-            Note: Real SMS requires Firebase billing to be enabled. Contact support if you encounter billing issues.
+            Using reCAPTCHA Enterprise for secure authentication. Real SMS requires Firebase billing to be enabled.
           </AlertDescription>
         </Alert>
 
