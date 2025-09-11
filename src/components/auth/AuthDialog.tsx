@@ -11,6 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useAuth } from '@/context/AuthContext';
 import { Loader2, Phone, Shield } from 'lucide-react';
+import { ConfirmationResult } from 'firebase/auth';
 
 interface AuthDialogProps {
   open: boolean;
@@ -22,6 +23,7 @@ export function AuthDialog({ open, onOpenChange }: AuthDialogProps) {
   const [otp, setOtp] = useState('');
   const [step, setStep] = useState<'phone' | 'otp'>('phone');
   const [loading, setLoading] = useState(false);
+  const [confirmationResult, setConfirmationResult] = useState<ConfirmationResult | null>(null);
   const { signInWithOTP, verifyOTP } = useAuth();
 
   const handleSendOTP = async (e: React.FormEvent) => {
@@ -32,7 +34,8 @@ export function AuthDialog({ open, onOpenChange }: AuthDialogProps) {
 
     setLoading(true);
     try {
-      await signInWithOTP(phone);
+      const result = await signInWithOTP(phone);
+      setConfirmationResult(result);
       setStep('otp');
     } catch (error) {
       // Error is handled in the auth context
@@ -43,13 +46,13 @@ export function AuthDialog({ open, onOpenChange }: AuthDialogProps) {
 
   const handleVerifyOTP = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!otp || otp.length !== 6) {
+    if (!otp || otp.length !== 6 || !confirmationResult) {
       return;
     }
 
     setLoading(true);
     try {
-      await verifyOTP(phone, otp);
+      await verifyOTP(confirmationResult, otp);
       onOpenChange(false);
       reset();
     } catch (error) {
@@ -64,6 +67,7 @@ export function AuthDialog({ open, onOpenChange }: AuthDialogProps) {
     setOtp('');
     setStep('phone');
     setLoading(false);
+    setConfirmationResult(null);
   };
 
   const handleClose = () => {
@@ -178,11 +182,17 @@ export function AuthDialog({ open, onOpenChange }: AuthDialogProps) {
               variant="ghost"
               size="sm"
               className="w-full text-xs"
-              onClick={() => handleSendOTP(new Event('submit') as any)}
+              onClick={() => {
+                const event = { preventDefault: () => {} } as React.FormEvent;
+                handleSendOTP(event);
+              }}
               disabled={loading}
             >
               Didn't receive code? Resend OTP
             </Button>
+            
+            {/* Hidden recaptcha container */}
+            <div id="recaptcha-container"></div>
           </form>
         )}
       </DialogContent>

@@ -18,7 +18,7 @@ export function Header() {
   const [authDialogOpen, setAuthDialogOpen] = useState(false);
   const navigate = useNavigate();
   const { getItemCount } = useCart();
-  const { user, profile, signOut, loading } = useAuth();
+  const { user, signOut, loading } = useAuth();
   const itemCount = getItemCount();
 
   const handleSearch = (e: React.FormEvent) => {
@@ -95,7 +95,7 @@ export function Header() {
                     <DropdownMenuItem className="flex flex-col items-start">
                       <span className="font-medium">My Account</span>
                       <span className="text-xs text-muted-foreground">
-                        {profile?.phone || 'Loading...'}
+                        {user?.phoneNumber || 'Loading...'}
                       </span>
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={signOut}>

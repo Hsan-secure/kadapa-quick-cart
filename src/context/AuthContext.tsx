@@ -1,220 +1,109 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import { User, Session } from '@supabase/supabase-js';
-import { supabase } from '@/integrations/supabase/client';
-import { toast } from '@/hooks/use-toast';
+import { createContext, useContext, useEffect, useState } from 'react';
+import { auth } from '@/config/firebase';
+import { 
+  signInWithPhoneNumber, 
+  RecaptchaVerifier, 
+  ConfirmationResult,
+  User,
+  onAuthStateChanged,
+  signOut as firebaseSignOut
+} from 'firebase/auth';
+import { toast } from 'sonner';
 
 interface AuthState {
   user: User | null;
-  session: Session | null;
   loading: boolean;
-  profile: UserProfile | null;
-}
-
-interface UserProfile {
-  id: string;
-  phone: string;
-  created_at: string;
-  updated_at: string;
 }
 
 interface AuthContextType extends AuthState {
-  signInWithOTP: (phone: string) => Promise<void>;
-  verifyOTP: (phone: string, otp: string) => Promise<void>;
+  signInWithOTP: (phone: string) => Promise<ConfirmationResult>;
+  verifyOTP: (confirmationResult: ConfirmationResult, otp: string) => Promise<void>;
   signOut: () => Promise<void>;
-  refreshProfile: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
-  session: null,
   loading: true,
-  profile: null,
-  signInWithOTP: async () => {},
+  signInWithOTP: async () => ({} as ConfirmationResult),
   verifyOTP: async () => {},
   signOut: async () => {},
-  refreshProfile: async () => {},
 });
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
-  const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
-  const [profile, setProfile] = useState<UserProfile | null>(null);
 
   useEffect(() => {
-    // Get initial session
-    const getInitialSession = async () => {
-      const { data: { session }, error } = await supabase.auth.getSession();
-      if (error) {
-        console.error('Error getting session:', error);
-      } else {
-        setSession(session);
-        setUser(session?.user ?? null);
-        if (session?.user) {
-          await fetchProfile(session.user.id);
-        }
-      }
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      console.log('Auth state changed:', user?.phoneNumber);
+      setUser(user);
       setLoading(false);
-    };
+    });
 
-    getInitialSession();
-
-    // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
-        setSession(session);
-        setUser(session?.user ?? null);
-        
-        if (session?.user) {
-          await fetchProfile(session.user.id);
-        } else {
-          setProfile(null);
-        }
-        
-        setLoading(false);
-      }
-    );
-
-    return () => subscription.unsubscribe();
+    return unsubscribe;
   }, []);
 
-  const fetchProfile = async (userId: string) => {
+  const signInWithOTP = async (phone: string): Promise<ConfirmationResult> => {
+    console.log('Requesting OTP for phone:', phone);
+    
     try {
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', userId)
-        .single();
-
-      if (error && error.code !== 'PGRST116') {
-        throw error;
-      }
-
-      setProfile(data);
-    } catch (error) {
-      console.error('Error fetching profile:', error);
-    }
-  };
-
-  const signInWithOTP = async (phone: string) => {
-    try {
-      // Format phone number to E.164 format (+91XXXXXXXXXX)
+      // Ensure phone number is in the correct format
       const formattedPhone = phone.startsWith('+91') ? phone : `+91${phone}`;
       
-      console.log('Sending OTP to:', formattedPhone);
-      
-      // Call custom edge function to send OTP
-      const { data, error } = await supabase.functions.invoke('send-otp', {
-        body: { phone: formattedPhone }
+      // Create recaptcha verifier
+      const recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
+        size: 'invisible',
+        callback: () => {
+          console.log('reCAPTCHA verified');
+        }
       });
 
-      console.log('OTP Response:', { data, error });
-
-      if (error) throw error;
-      if (!data?.success) throw new Error(data?.error || 'Failed to send OTP');
-
-      toast({
-        title: "OTP Sent",
-        description: `Verification code sent to ${formattedPhone}. Check your SMS messages.`,
-      });
+      const confirmationResult = await signInWithPhoneNumber(auth, formattedPhone, recaptchaVerifier);
       
-      // In demo mode, show the OTP in console/toast for testing
-      if (data?.otp) {
-        console.log('Demo OTP:', data.otp);
-        toast({
-          title: "Demo Mode - OTP Generated",
-          description: `Your demo OTP is: ${data.otp}`,
-          variant: "default",
-          duration: 10000,
-        });
-      }
+      toast.success(`OTP sent to ${formattedPhone}`);
+      return confirmationResult;
     } catch (error: any) {
-      console.error('OTP send error:', error);
-      toast({
-        title: "Error",
-        description: error.message || "Failed to send OTP. Please check your phone number and try again.",
-        variant: "destructive",
-      });
+      console.error('Error sending OTP:', error);
+      toast.error(error.message || 'Failed to send OTP');
       throw error;
     }
   };
 
-  const verifyOTP = async (phone: string, otp: string) => {
+  const verifyOTP = async (confirmationResult: ConfirmationResult, otp: string) => {
+    console.log('Verifying OTP:', otp);
+    
     try {
-      const formattedPhone = phone.startsWith('+91') ? phone : `+91${phone}`;
-      
-      // Call custom edge function to verify OTP
-      const { data, error } = await supabase.functions.invoke('verify-otp', {
-        body: { phone: formattedPhone, otp }
-      });
-
-      console.log('OTP Verification Response:', { data, error });
-
-      if (error) throw error;
-      if (!data?.success) throw new Error(data?.error || 'Invalid OTP');
-
-      // The edge function handles user creation and profile setup
-      // Force refresh the auth state
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session) {
-        setSession(session);
-        setUser(session.user);
-        await fetchProfile(session.user.id);
-      }
-
-      toast({
-        title: "Welcome!",
-        description: "Successfully logged in",
-      });
+      const result = await confirmationResult.confirm(otp);
+      console.log('OTP verified successfully:', result.user.phoneNumber);
+      toast.success('Login successful!');
     } catch (error: any) {
-      console.error('OTP verification error:', error);
-      toast({
-        title: "Error",
-        description: error.message || "Invalid OTP",
-        variant: "destructive",
-      });
+      console.error('Error verifying OTP:', error);
+      toast.error('Invalid OTP. Please try again.');
       throw error;
     }
   };
 
   const signOut = async () => {
     try {
-      const { error } = await supabase.auth.signOut();
-      if (error) throw error;
-
-      toast({
-        title: "Logged out",
-        description: "Come back soon!",
-      });
+      await firebaseSignOut(auth);
+      toast.success('Signed out successfully');
     } catch (error: any) {
-      console.error('Sign out error:', error);
-      toast({
-        title: "Error",
-        description: error.message || "Failed to sign out",
-        variant: "destructive",
-      });
+      console.error('Error signing out:', error);
+      toast.error('Error signing out');
+      throw error;
     }
   };
 
-  const refreshProfile = async () => {
-    if (user) {
-      await fetchProfile(user.id);
-    }
+  const value: AuthContextType = {
+    user,
+    loading,
+    signInWithOTP,
+    verifyOTP,
+    signOut,
   };
 
   return (
-    <AuthContext.Provider
-      value={{
-        user,
-        session,
-        loading,
-        profile,
-        signInWithOTP,
-        verifyOTP,
-        signOut,
-        refreshProfile,
-      }}
-    >
+    <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>
   );
