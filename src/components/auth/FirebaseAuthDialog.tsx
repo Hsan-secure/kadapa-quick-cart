@@ -153,11 +153,17 @@ export function FirebaseAuthDialog({ open, onOpenChange }: FirebaseAuthDialogPro
           </DialogDescription>
         </DialogHeader>
 
-        {/* Firebase Billing Notice */}
+        {/* Test Numbers Info */}
         <Alert>
           <AlertCircle className="h-4 w-4" />
           <AlertDescription className="text-sm">
-            Using reCAPTCHA Enterprise for secure authentication. Real SMS requires Firebase billing to be enabled.
+            <div className="space-y-1">
+              <div>Test Numbers Available:</div>
+              <div className="font-mono text-xs">
+                <div>6302829644 → OTP: 193100</div>
+                <div>9000371641 → OTP: 001931</div>
+              </div>
+            </div>
           </AlertDescription>
         </Alert>
 
@@ -172,7 +178,7 @@ export function FirebaseAuthDialog({ open, onOpenChange }: FirebaseAuthDialogPro
                 <Input
                   id="phone"
                   type="tel"
-                  placeholder="9876543210"
+                  placeholder="6302829644 or 9000371641"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value.replace(/\D/g, '').slice(0, 10))}
                   className="rounded-l-none"
@@ -261,7 +267,7 @@ export function FirebaseAuthDialog({ open, onOpenChange }: FirebaseAuthDialogPro
         )}
 
         {/* Hidden recaptcha container */}
-        <div id="recaptcha-container" className="hidden"></div>
+        <div id="recaptcha-container" style={{ display: 'none' }}></div>
       </DialogContent>
     </Dialog>
   );

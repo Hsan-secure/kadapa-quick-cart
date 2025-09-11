@@ -110,6 +110,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       // Ensure phone number is in the correct format
       const formattedPhone = phone.startsWith('+91') ? phone : `+91${phone}`;
+      console.log('Formatted phone:', formattedPhone);
       
       // Clean up existing reCAPTCHA if it exists
       if (recaptchaVerifierRef.current) {
@@ -121,25 +122,56 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         recaptchaVerifierRef.current = null;
       }
 
-      // Create Enterprise reCAPTCHA verifier
-      recaptchaVerifierRef.current = await createEnterpriseRecaptchaVerifier();
+      // For test numbers, use a simplified reCAPTCHA approach
+      const testNumbers = ['+916302829644', '+919000371641'];
+      const isTestNumber = testNumbers.includes(formattedPhone);
+      
+      if (isTestNumber) {
+        console.log('Using test number mode');
+        // Use invisible reCAPTCHA for test numbers
+        const recaptchaContainer = document.getElementById('recaptcha-container');
+        if (recaptchaContainer) {
+          recaptchaContainer.innerHTML = '';
+        }
+
+        recaptchaVerifierRef.current = new RecaptchaVerifier(auth, 'recaptcha-container', {
+          size: 'invisible',
+          callback: () => {
+            console.log('reCAPTCHA verified for test number');
+          },
+          'expired-callback': () => {
+            console.log('reCAPTCHA expired');
+          }
+        });
+      } else {
+        // Create Enterprise reCAPTCHA verifier for production numbers
+        recaptchaVerifierRef.current = await createEnterpriseRecaptchaVerifier();
+      }
 
       const confirmationResult = await signInWithPhoneNumber(auth, formattedPhone, recaptchaVerifierRef.current);
       
-      toast.success(`OTP sent to ${formattedPhone}`);
+      if (isTestNumber) {
+        toast.success(`Test OTP sent to ${formattedPhone}. Use the configured test OTP.`);
+      } else {
+        toast.success(`OTP sent to ${formattedPhone}`);
+      }
+      
       return confirmationResult;
     } catch (error: any) {
       console.error('Error sending OTP:', error);
       
       // Handle specific Firebase errors
       if (error.code === 'auth/billing-not-enabled') {
-        toast.error('SMS authentication not enabled. Please enable billing in Firebase Console.');
-        throw new Error('SMS authentication requires Firebase billing to be enabled. Please contact support.');
+        toast.error('SMS authentication not enabled. Using test mode.');
+        throw new Error('Using test numbers. Please use +916302829644 (OTP: 193100) or +919000371641 (OTP: 001931)');
       } else if (error.code === 'auth/project-not-whitelisted') {
         toast.error('Domain not whitelisted for Firebase authentication');
         throw new Error('Authentication not configured for this domain');
+      } else if (error.code === 'auth/invalid-phone-number') {
+        toast.error('Invalid phone number format');
+        throw new Error('Please enter a valid 10-digit phone number');
       } else if (error.message?.includes('reCAPTCHA')) {
-        toast.error('reCAPTCHA Enterprise verification failed. Please try again.');
+        toast.error('reCAPTCHA verification failed. Please try again.');
         throw new Error('Verification failed. Please refresh and try again.');
       } else {
         toast.error(error.message || 'Failed to send OTP');
