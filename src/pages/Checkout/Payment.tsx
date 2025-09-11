@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, CreditCard, Smartphone, Check, X } from 'lucide-react';
+import { ArrowLeft, CreditCard, Smartphone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { useCart } from '@/context/CartContext';
@@ -18,9 +18,6 @@ export default function CheckoutPayment() {
   const { user } = useAuth();
   const [paymentMethod, setPaymentMethod] = useState<'COD' | 'PhonePe'>('COD');
   const [isProcessing, setIsProcessing] = useState(false);
-  const [showPhonePeModal, setShowPhonePeModal] = useState(false);
-  const [phonepeStatus, setPhonepeStatus] = useState<'pending' | 'success' | 'failed'>('pending');
-  const [transactionId, setTransactionId] = useState<string>('');
 
   const selectedAddressId = sessionStorage.getItem('selectedAddressId');
   const selectedAddress = state.addresses.find(addr => addr.id === selectedAddressId);
@@ -59,16 +56,20 @@ export default function CheckoutPayment() {
 
         if (error) throw error;
 
-        setTransactionId(data.transactionId);
-        setShowPhonePeModal(true);
+        // Store transaction info for callback
+        sessionStorage.setItem('pendingOrderId', orderId);
+        sessionStorage.setItem('pendingTransactionId', data.transactionId);
         
-        // Open PhonePe payment URL
-        if (data.paymentUrl) {
-          window.location.href = data.paymentUrl;
-        }
+        toast({
+          title: "Redirecting to PhonePe...",
+          description: "You will be redirected to complete the payment",
+        });
 
-        // Start polling for payment status
-        pollPaymentStatus(data.transactionId, orderId);
+        // Redirect to PhonePe payment URL
+        setTimeout(() => {
+          window.location.href = data.paymentUrl;
+        }, 1000);
+
       } else {
         // COD - direct order creation
         completeOrder('COD');
@@ -80,54 +81,10 @@ export default function CheckoutPayment() {
         description: error.message || "Failed to process payment",
         variant: "destructive",
       });
-    } finally {
       setIsProcessing(false);
     }
   };
 
-  const pollPaymentStatus = async (txnId: string, orderId: string) => {
-    // Poll every 3 seconds for 2 minutes
-    const maxAttempts = 40;
-    let attempts = 0;
-
-    const poll = async () => {
-      try {
-        const { data, error } = await supabase.functions.invoke('verify-phonepe-payment', {
-          body: {
-            transactionId: txnId,
-            orderId: orderId,
-          }
-        });
-
-        if (error) throw error;
-
-        if (data.status === 'SUCCESS') {
-          setPhonepeStatus('success');
-          setTimeout(() => {
-            completeOrder('PhonePe', txnId);
-            setShowPhonePeModal(false);
-          }, 2000);
-        } else if (data.status === 'FAILED') {
-          setPhonepeStatus('failed');
-        } else if (attempts < maxAttempts) {
-          attempts++;
-          setTimeout(poll, 3000);
-        } else {
-          setPhonepeStatus('failed');
-        }
-      } catch (error) {
-        console.error('Status check error:', error);
-        if (attempts < maxAttempts) {
-          attempts++;
-          setTimeout(poll, 3000);
-        } else {
-          setPhonepeStatus('failed');
-        }
-      }
-    };
-
-    setTimeout(poll, 3000);
-  };
 
   const completeOrder = (method: 'COD' | 'PhonePe', paymentRef?: string) => {
     const etaMinutes = Math.floor(Math.random() * 15) + 20; // 20-35 minutes
@@ -159,34 +116,6 @@ export default function CheckoutPayment() {
     navigate(`/order/${order.id}`);
   };
 
-  const retryPhonePePayment = async () => {
-    if (!transactionId) return;
-    
-    setPhonepeStatus('pending');
-    
-    try {
-      const { data, error } = await supabase.functions.invoke('verify-phonepe-payment', {
-        body: {
-          transactionId: transactionId,
-          orderId: selectedAddress ? `QD-${Date.now()}` : '',
-        }
-      });
-
-      if (error) throw error;
-
-      if (data.status === 'SUCCESS') {
-        setPhonepeStatus('success');
-        setTimeout(() => {
-          completeOrder('PhonePe', transactionId);
-          setShowPhonePeModal(false);
-        }, 2000);
-      } else {
-        setPhonepeStatus('failed');
-      }
-    } catch (error) {
-      setPhonepeStatus('failed');
-    }
-  };
 
   return (
     <div className="min-h-screen bg-muted/30 py-8">
@@ -343,61 +272,6 @@ export default function CheckoutPayment() {
         </div>
       </div>
 
-      {/* PhonePe Payment Modal */}
-      <Dialog open={showPhonePeModal} onOpenChange={setShowPhonePeModal}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle className="text-center">PhonePe Payment</DialogTitle>
-          </DialogHeader>
-          
-          <div className="text-center py-6">
-            {phonepeStatus === 'pending' && (
-              <div className="space-y-4">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
-                <p className="font-medium">Processing payment...</p>
-                <p className="text-sm text-muted-foreground">
-                  Amount: ₹{total.toFixed(2)}
-                </p>
-                <div className="bg-muted p-4 rounded-lg">
-                  <p className="text-sm">
-                    UPI ID: 6302829644@ybl
-                  </p>
-                  <p className="text-xs text-muted-foreground mt-1">
-                    Complete payment using any UPI app
-                  </p>
-                </div>
-              </div>
-            )}
-            
-            {phonepeStatus === 'success' && (
-              <div className="space-y-4">
-                <div className="w-12 h-12 bg-success rounded-full flex items-center justify-center mx-auto">
-                  <Check className="h-6 w-6 text-white" />
-                </div>
-                <p className="font-medium text-success">Payment Successful!</p>
-                <p className="text-sm text-muted-foreground">
-                  Your order is being prepared...
-                </p>
-              </div>
-            )}
-            
-            {phonepeStatus === 'failed' && (
-              <div className="space-y-4">
-                <div className="w-12 h-12 bg-destructive rounded-full flex items-center justify-center mx-auto">
-                  <X className="h-6 w-6 text-white" />
-                </div>
-                <p className="font-medium text-destructive">Payment Failed</p>
-                <p className="text-sm text-muted-foreground">
-                  There was an issue processing your payment
-                </p>
-                <Button onClick={retryPhonePePayment} className="btn-hero">
-                  Retry Payment
-                </Button>
-              </div>
-            )}
-          </div>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 }

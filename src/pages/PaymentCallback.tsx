@@ -15,8 +15,14 @@ export default function PaymentCallback() {
   useEffect(() => {
     const checkPaymentStatus = async () => {
       try {
-        const transactionId = searchParams.get('transactionId');
-        const orderIdParam = searchParams.get('orderId');
+        // Try to get from URL params first, then fallback to sessionStorage
+        let transactionId = searchParams.get('transactionId');
+        let orderIdParam = searchParams.get('orderId');
+        
+        if (!transactionId || !orderIdParam) {
+          transactionId = sessionStorage.getItem('pendingTransactionId');
+          orderIdParam = sessionStorage.getItem('pendingOrderId');
+        }
         
         if (!transactionId || !orderIdParam) {
           setStatus('failed');
@@ -65,6 +71,20 @@ export default function PaymentCallback() {
 
   const handleContinue = () => {
     if (status === 'success' && orderId) {
+      // Complete the order in cart context
+      const storedItems = sessionStorage.getItem('pendingCartItems');
+      const storedAddress = sessionStorage.getItem('pendingAddress');
+      const storedTotal = sessionStorage.getItem('pendingTotal');
+      
+      if (storedItems && storedAddress && storedTotal) {
+        // Clear pending data
+        sessionStorage.removeItem('pendingCartItems');
+        sessionStorage.removeItem('pendingAddress');
+        sessionStorage.removeItem('pendingTotal');
+        sessionStorage.removeItem('pendingOrderId');
+        sessionStorage.removeItem('pendingTransactionId');
+      }
+      
       navigate(`/order/${orderId}`);
     } else {
       navigate('/cart');

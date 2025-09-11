@@ -62,33 +62,20 @@ serve(async (req) => {
       throw orderError;
     }
 
-    // Generate PhonePe payment URL
+    // Generate PhonePe payment URL (simulation)
     const merchantId = "QUICKDELIVERY";
     const merchantTransactionId = `TXN_${Date.now()}_${Math.random().toString(36).substr(2, 6)}`;
     
-    // Create payment request for PhonePe
-    const paymentPayload = {
-      merchantId: merchantId,
-      merchantTransactionId: merchantTransactionId,
-      merchantUserId: user.id,
-      amount: amount, // Amount in paise
-      redirectUrl: `${req.headers.get("origin")}/payment-callback`,
-      redirectMode: "POST",
-      callbackUrl: `${Deno.env.get("SUPABASE_URL")}/functions/v1/phonepe-callback`,
-      mobileNumber: user.phone || "9999999999",
-      paymentInstrument: {
-        type: "UPI_COLLECT",
-        vpa: "6302829644@ybl"
-      }
-    };
-
-    // In a real implementation, you would:
-    // 1. Base64 encode the payload
-    // 2. Generate X-VERIFY header with SHA256 hash
-    // 3. Make API call to PhonePe servers
+    // In a real PhonePe implementation, you would:
+    // 1. Create the payment request payload
+    // 2. Base64 encode it
+    // 3. Generate checksum with salt + payload + salt
+    // 4. Make API call to PhonePe payment gateway
     
-    // For demo purposes, we'll simulate the PhonePe response
-    const phonepeUrl = `phonepe://upi/pay?pa=6302829644@ybl&am=${(amount/100).toFixed(2)}&tn=QuickDelivery-${orderId}&cu=INR`;
+    // For now, we'll redirect to a simulated PhonePe page
+    const redirectUrl = `${req.headers.get("origin")}/payment-callback?transactionId=${merchantTransactionId}&orderId=${orderId}`;
+    const phonepeUrl = `https://payments.phonepe.com/v1/debit?amount=${(amount/100).toFixed(2)}&currency=INR&merchantId=${merchantId}&transactionId=${merchantTransactionId}&redirectUrl=${encodeURIComponent(redirectUrl)}`;
+    
     
     // Create transaction record
     const { error: transactionError } = await supabaseClient
