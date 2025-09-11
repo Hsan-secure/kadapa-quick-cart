@@ -10,7 +10,7 @@ import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
 import { categories } from '@/data/products';
 import { HeaderChatButton } from './HeaderChatButton';
-import { AuthDialog } from './auth/AuthDialog';
+import { FirebaseAuthDialog } from './auth/FirebaseAuthDialog';
 
 export function Header() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -242,7 +242,7 @@ export function Header() {
       </div>
 
       {/* Auth Dialog */}
-      <AuthDialog open={authDialogOpen} onOpenChange={setAuthDialogOpen} />
+      <FirebaseAuthDialog open={authDialogOpen} onOpenChange={setAuthDialogOpen} />
     </header>
   );
 }
