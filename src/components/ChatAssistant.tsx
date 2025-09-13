@@ -65,6 +65,15 @@ export function ChatAssistant() {
   const getBotResponse = (userMessage: string): string => {
     const msg = userMessage.toLowerCase();
 
+    // Delivery agent specific queries
+    if (msg.includes('delivery agent') || msg.includes('delivery partner') || msg.includes('delivery boy')) {
+      return 'I can help you connect with your delivery partner! Available options:\n• Chat with delivery partner (real-time messaging)\n• Quick messages: "Where are you?", "How much time left?", "Call before delivery"\n• Track live location\n• Get delivery partner details (name, rating, vehicle info)\n\nWhat would you like to do?';
+    }
+
+    if (msg.includes('chat with') || msg.includes('message delivery')) {
+      return 'You can chat with your delivery partner using these quick messages:\n📱 "Where is my order currently?"\n⏰ "How much more time for delivery?"\n📞 "Can you call me when you reach?"\n⏳ "I am not at home, please wait 5 minutes"\n🔔 "Please ring the doorbell"\n🏢 "Deliver to security guard"\n\nOr type a custom message. Your delivery partner will respond quickly!';
+    }
+
     // Order tracking and status
     if (msg.includes('track') || msg.includes('order status') || msg.includes('where is my order') || msg.includes('order id')) {
       return 'To track your order, please provide your order ID (e.g., ORD123456). You can find it in your order confirmation email or SMS. I can help you check the real-time status including preparation, dispatch, and estimated delivery time.';

@@ -16,6 +16,7 @@ import Cart from "./pages/Cart";
 import CheckoutAddress from "./pages/Checkout/Address";
 import CheckoutPayment from "./pages/Checkout/Payment";
 import OrderTracking from "./pages/Tracking";
+import { MyOrders } from "./pages/MyOrders";
 import NotFound from "./pages/NotFound";
 import About from "./pages/About";
 import FAQ from "./pages/FAQ";
@@ -44,6 +45,7 @@ function AppContent() {
         <Route path="/payment-callback" element={<PaymentCallback />} />
         <Route path="/live-tracking" element={<LiveTracking />} />
         <Route path="/order/:orderId" element={<OrderTracking />} />
+        <Route path="/my-orders" element={<MyOrders />} />
         <Route path="/about" element={<About />} />
         <Route path="/faq" element={<FAQ />} />
         <Route path="/terms" element={<Terms />} />

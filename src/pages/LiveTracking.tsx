@@ -10,11 +10,14 @@ import {
   Package, 
   Truck, 
   MapPin, 
-  Phone,
   MessageCircle,
-  Star
+  Star,
+  X
 } from 'lucide-react';
 import { toast } from 'sonner';
+import { CancelOrderModal } from '@/components/CancelOrderModal';
+import { RatingModal } from '@/components/RatingModal';
+import { useCart } from '@/context/CartContext';
 
 interface OrderStatus {
   id: string;
@@ -45,6 +48,7 @@ const statusSteps = [
 export function LiveTracking() {
   const [searchParams] = useSearchParams();
   const orderId = searchParams.get('orderId') || 'QD-' + Date.now();
+  const { state, updateOrderStatus } = useCart();
   
   const [orderStatus, setOrderStatus] = useState<OrderStatus>({
     id: orderId,
@@ -54,6 +58,17 @@ export function LiveTracking() {
   });
 
   const [progress, setProgress] = useState(0);
+  const [showCancelModal, setShowCancelModal] = useState(false);
+  const [showRatingModal, setShowRatingModal] = useState(false);
+  const [isCODOrder, setIsCODOrder] = useState(false);
+
+  // Check if this is a COD order
+  useEffect(() => {
+    const order = state.orders.find(o => o.id === orderId);
+    if (order) {
+      setIsCODOrder(order.payment.method === 'COD');
+    }
+  }, [orderId, state.orders]);
 
   // Simulate real-time order updates
   useEffect(() => {
@@ -118,18 +133,31 @@ export function LiveTracking() {
     return 'pending';
   };
 
-  const handleCallDeliveryPartner = () => {
-    if (orderStatus.deliveryPartner) {
-      toast.success(`Calling ${orderStatus.deliveryPartner.name}...`);
-      // In real app, would initiate call
-    }
-  };
+  const predefinedMessages = [
+    'Where is my order currently?',
+    'How much more time for delivery?',
+    'Can you call me when you reach?',
+    'I am not at home, please wait 5 minutes',
+    'Please ring the doorbell',
+    'Deliver to security guard',
+    'Call me before delivery'
+  ];
 
   const handleChatDeliveryPartner = () => {
     if (orderStatus.deliveryPartner) {
-      toast.success(`Opening chat with ${orderStatus.deliveryPartner.name}...`);
-      // In real app, would open chat interface
+      // Show predefined message options
+      toast.success(`Chat opened with ${orderStatus.deliveryPartner.name}. Select from quick messages or type your own.`);
     }
+  };
+
+  const handleCancelOrder = (reason: string, customReason?: string) => {
+    updateOrderStatus(orderId, 'CANCELLED');
+    toast.success('Order cancelled successfully');
+  };
+
+  const handleRateOrder = (rating: number, review: string) => {
+    // In real app, would save rating to backend
+    toast.success(`Thank you for rating us ${rating} stars!`);
   };
 
   return (
@@ -266,22 +294,52 @@ export function LiveTracking() {
                 </div>
               )}
 
-              <div className="flex space-x-3">
-                <Button 
-                  onClick={handleCallDeliveryPartner}
-                  className="flex-1"
-                  variant="outline"
-                >
-                  <Phone className="w-4 h-4 mr-2" />
-                  Call
-                </Button>
+              <div className="space-y-3">
                 <Button 
                   onClick={handleChatDeliveryPartner}
-                  className="flex-1"
+                  className="w-full"
                   variant="outline"
                 >
                   <MessageCircle className="w-4 h-4 mr-2" />
-                  Chat
+                  Chat with Delivery Partner
+                </Button>
+                
+                {/* Predefined Messages */}
+                <div className="bg-blue-50 p-3 rounded-lg">
+                  <p className="text-xs font-medium text-blue-800 mb-2">Quick Messages:</p>
+                  <div className="grid grid-cols-1 gap-1">
+                    {predefinedMessages.slice(0, 3).map((message) => (
+                      <button
+                        key={message}
+                        onClick={() => toast.success(`Message sent: "${message}"`)}
+                        className="text-xs text-left p-2 bg-white rounded border border-blue-200 hover:bg-blue-50 transition-colors"
+                      >
+                        {message}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Cancel Order - Only for COD and early status */}
+        {isCODOrder && (orderStatus.status === 'confirmed' || orderStatus.status === 'preparing') && (
+          <Card className="border-orange-200 bg-orange-50">
+            <CardContent className="pt-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="font-medium text-orange-800">Need to cancel?</p>
+                  <p className="text-sm text-orange-600">Available for COD orders during processing</p>
+                </div>
+                <Button
+                  variant="outline"
+                  onClick={() => setShowCancelModal(true)}
+                  className="border-orange-300 text-orange-700 hover:bg-orange-100"
+                >
+                  <X className="w-4 h-4 mr-1" />
+                  Cancel Order
                 </Button>
               </div>
             </CardContent>
@@ -299,12 +357,31 @@ export function LiveTracking() {
               <p className="text-green-700 mb-4">
                 Thank you for choosing Quick Delivery
               </p>
-              <Button className="bg-green-600 hover:bg-green-700">
+              <Button 
+                className="bg-green-600 hover:bg-green-700"
+                onClick={() => setShowRatingModal(true)}
+              >
+                <Star className="w-4 h-4 mr-2" />
                 Rate Your Experience
               </Button>
             </CardContent>
           </Card>
         )}
+
+        {/* Modals */}
+        <CancelOrderModal
+          isOpen={showCancelModal}
+          onClose={() => setShowCancelModal(false)}
+          orderId={orderId}
+          onCancel={handleCancelOrder}
+        />
+
+        <RatingModal
+          isOpen={showRatingModal}
+          onClose={() => setShowRatingModal(false)}
+          orderId={orderId}
+          onSubmit={handleRateOrder}
+        />
       </div>
     </div>
   );
