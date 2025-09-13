@@ -23,6 +23,8 @@ import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
 import Refund from "./pages/Refund";
 import PaymentCallback from "./pages/PaymentCallback";
+import { PaymentSimulation } from "./pages/PaymentSimulation";
+import { LiveTracking } from "./pages/LiveTracking";
 
 const queryClient = new QueryClient();
 
@@ -38,7 +40,9 @@ function AppContent() {
         <Route path="/cart" element={<Cart />} />
         <Route path="/checkout/address" element={<CheckoutAddress />} />
         <Route path="/checkout/payment" element={<CheckoutPayment />} />
+        <Route path="/payment-simulation" element={<PaymentSimulation />} />
         <Route path="/payment-callback" element={<PaymentCallback />} />
+        <Route path="/live-tracking" element={<LiveTracking />} />
         <Route path="/order/:orderId" element={<OrderTracking />} />
         <Route path="/about" element={<About />} />
         <Route path="/faq" element={<FAQ />} />

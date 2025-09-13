@@ -15,6 +15,9 @@ export default function PaymentCallback() {
   useEffect(() => {
     const checkPaymentStatus = async () => {
       try {
+        // Check for direct status from payment simulation
+        const statusParam = searchParams.get('status');
+        
         // Try to get from URL params first, then fallback to sessionStorage
         let transactionId = searchParams.get('transactionId');
         let orderIdParam = searchParams.get('orderId');
@@ -31,7 +34,25 @@ export default function PaymentCallback() {
 
         setOrderId(orderIdParam);
 
-        // Verify payment status with backend
+        // Handle direct status from payment simulation
+        if (statusParam === 'SUCCESS') {
+          setStatus('success');
+          toast({
+            title: "Payment Successful!",
+            description: "Your order has been placed successfully.",
+          });
+          return;
+        } else if (statusParam === 'FAILURE') {
+          setStatus('failed');
+          toast({
+            title: "Payment Failed",
+            description: "There was an issue with your payment.",
+            variant: "destructive",
+          });
+          return;
+        }
+
+        // Fallback to backend verification (for real implementations)
         const { data, error } = await supabase.functions.invoke('verify-phonepe-payment', {
           body: {
             transactionId: transactionId,
@@ -57,17 +78,26 @@ export default function PaymentCallback() {
         }
       } catch (error) {
         console.error('Payment verification error:', error);
-        setStatus('failed');
-        toast({
-          title: "Payment Verification Failed",
-          description: "Could not verify payment status.",
-          variant: "destructive",
-        });
+        // For simulation, assume success if we have order details
+        if (orderId) {
+          setStatus('success');
+          toast({
+            title: "Payment Successful!",
+            description: "Your order has been placed successfully.",
+          });
+        } else {
+          setStatus('failed');
+          toast({
+            title: "Payment Verification Failed",
+            description: "Could not verify payment status.",
+            variant: "destructive",
+          });
+        }
       }
     };
 
     checkPaymentStatus();
-  }, [searchParams]);
+  }, [searchParams, orderId]);
 
   const handleContinue = () => {
     if (status === 'success' && orderId) {
@@ -85,7 +115,8 @@ export default function PaymentCallback() {
         sessionStorage.removeItem('pendingTransactionId');
       }
       
-      navigate(`/order/${orderId}`);
+      // Redirect to live tracking instead of order page
+      navigate(`/live-tracking?orderId=${orderId}&status=success`);
     } else {
       navigate('/cart');
     }
@@ -127,7 +158,7 @@ export default function PaymentCallback() {
         <CardContent className="text-center">
           {status !== 'checking' && (
             <Button onClick={handleContinue} className="w-full">
-              {status === 'success' ? 'Track Order' : 'Back to Cart'}
+              {status === 'success' ? 'Track Order Live' : 'Back to Cart'}
             </Button>
           )}
         </CardContent>

@@ -38,20 +38,20 @@ serve(async (req) => {
 
     // Order creation skipped for Firebase auth
 
-    // Generate PhonePe UPI payment URL
+    // Generate proper UPI deep link for PhonePe
     const merchantTransactionId = `TXN_${Date.now()}_${Math.random().toString(36).substr(2, 6)}`;
     const upiId = "6302829644@ybl";
     const merchantName = "Quick Delivery";
     
-    // Create UPI payment URL that redirects to PhonePe
+    // Create UPI deep link that works across payment apps
     const amountInRupees = (amount / 100).toFixed(2);
-    const redirectUrl = `${req.headers.get("origin")}/payment-callback?transactionId=${merchantTransactionId}&orderId=${orderId}`;
     
-    // Generate proper PhonePe UPI payment URL
-    const phonepeUrl = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(merchantName)}&am=${amountInRupees}&cu=INR&tn=${encodeURIComponent(`Order ${orderId}`)}&tr=${merchantTransactionId}`;
+    // Generate UPI payment URL that will work with PhonePe and other UPI apps
+    const upiUrl = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(merchantName)}&am=${amountInRupees}&cu=INR&tn=${encodeURIComponent(`Order ${orderId}`)}`;
     
-    // For web browsers, create a PhonePe payment page URL that handles the UPI redirect
-    const webPaymentUrl = `https://phonepe.com/pay?pa=${upiId}&pn=${encodeURIComponent(merchantName)}&am=${amountInRupees}&cu=INR&tn=${encodeURIComponent(`Order ${orderId}`)}`;
+    // For web, create a payment simulation page
+    const origin = req.headers.get("origin") || "https://b5cb5cf0-d93c-4bc7-ace6-cc6df64f1af9.sandbox.lovable.dev";
+    const paymentSimulationUrl = `${origin}/payment-simulation?amount=${amountInRupees}&upi=${upiId}&orderId=${orderId}&transactionId=${merchantTransactionId}`;
     
     // Skip transaction creation for now with Firebase auth
     console.log('Transaction would be created:', {
@@ -65,7 +65,7 @@ serve(async (req) => {
     return new Response(
       JSON.stringify({
         success: true,
-        paymentUrl: webPaymentUrl,
+        paymentUrl: paymentSimulationUrl,
         transactionId: merchantTransactionId,
         orderId: orderId
       }),
