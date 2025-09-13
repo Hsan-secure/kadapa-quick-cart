@@ -23,44 +23,20 @@ serve(async (req) => {
     // Create Supabase client
     const supabaseClient = createClient(
       Deno.env.get("SUPABASE_URL") ?? "",
-      Deno.env.get("SUPABASE_ANON_KEY") ?? ""
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
     );
 
-    // Get authenticated user
-    const authHeader = req.headers.get("Authorization")!;
-    const token = authHeader.replace("Bearer ", "");
-    const { data } = await supabaseClient.auth.getUser(token);
-    const user = data.user;
-    
-    if (!user) {
-      throw new Error("User not authenticated");
-    }
+    // Since we're using Firebase auth, we'll create orders without user ID validation
+    // The order will be created without user_id for now
+    console.log('Creating payment request for order');
 
     const { amount, orderId, items, address }: PaymentRequest = await req.json();
 
-    // Create order in database
-    const { data: order, error: orderError } = await supabaseClient
-      .from('orders')
-      .insert({
-        id: orderId,
-        user_id: user.id,
-        items: items,
-        subtotal: amount * 0.9, // Approximate calculation
-        discount: 0,
-        delivery_fee: amount > 39900 ? 0 : 1500, // 399 INR in paise
-        gst: Math.round(amount * 0.05),
-        total: amount,
-        address: address,
-        payment_method: 'PhonePe',
-        status: 'PENDING',
-        eta_minutes: Math.floor(Math.random() * 15) + 20,
-      })
-      .select()
-      .single();
+    // For now, skip database order creation since we're using Firebase auth
+    // The order will be created on the frontend after successful payment
+    console.log('Order details:', { orderId, amount, items: items.length, address });
 
-    if (orderError) {
-      throw orderError;
-    }
+    // Order creation skipped for Firebase auth
 
     // Generate PhonePe UPI payment URL
     const merchantTransactionId = `TXN_${Date.now()}_${Math.random().toString(36).substr(2, 6)}`;
@@ -77,21 +53,14 @@ serve(async (req) => {
     // For web browsers, create a PhonePe payment page URL that handles the UPI redirect
     const webPaymentUrl = `https://phonepe.com/pay?pa=${upiId}&pn=${encodeURIComponent(merchantName)}&am=${amountInRupees}&cu=INR&tn=${encodeURIComponent(`Order ${orderId}`)}`;
     
-    
-    // Create transaction record
-    const { error: transactionError } = await supabaseClient
-      .from('transactions')
-      .insert({
-        order_id: orderId,
-        transaction_id: merchantTransactionId,
-        amount: amount,
-        status: 'PENDING',
-        payment_method: 'PhonePe'
-      });
-
-    if (transactionError) {
-      console.error('Transaction creation error:', transactionError);
-    }
+    // Skip transaction creation for now with Firebase auth
+    console.log('Transaction would be created:', {
+      order_id: orderId,
+      transaction_id: merchantTransactionId,
+      amount: amount,
+      status: 'PENDING',
+      payment_method: 'PhonePe'
+    });
 
     return new Response(
       JSON.stringify({

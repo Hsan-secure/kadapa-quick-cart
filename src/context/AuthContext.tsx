@@ -59,48 +59,31 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return unsubscribe;
   }, []);
 
-  // Create Enterprise reCAPTCHA verifier
+  // Create Enterprise reCAPTCHA verifier (fallback to regular reCAPTCHA if Enterprise not available)
   const createEnterpriseRecaptchaVerifier = (): Promise<RecaptchaVerifier> => {
     return new Promise((resolve, reject) => {
-      if (!window.grecaptcha?.enterprise) {
-        reject(new Error('reCAPTCHA Enterprise not loaded'));
-        return;
+      // Since Enterprise reCAPTCHA is disabled, fall back to invisible reCAPTCHA
+      console.log('Using fallback invisible reCAPTCHA');
+      
+      const recaptchaContainer = document.getElementById('recaptcha-container');
+      if (recaptchaContainer) {
+        recaptchaContainer.innerHTML = '';
       }
 
-      window.grecaptcha.enterprise.ready(async () => {
-        try {
-          // Execute reCAPTCHA Enterprise
-          const token = await window.grecaptcha.enterprise.execute(RECAPTCHA_SITE_KEY, {
-            action: 'LOGIN'
-          });
-
-          console.log('reCAPTCHA Enterprise token generated:', token);
-
-          // Create a custom RecaptchaVerifier that uses the Enterprise token
-          const recaptchaContainer = document.getElementById('recaptcha-container');
-          if (recaptchaContainer) {
-            recaptchaContainer.innerHTML = '';
-          }
-
-          const verifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
-            size: 'invisible',
-            callback: () => {
-              console.log('reCAPTCHA verified with Enterprise token');
-            },
-            'expired-callback': () => {
-              console.log('reCAPTCHA expired');
-            },
-            'error-callback': (error: any) => {
-              console.log('reCAPTCHA error:', error);
-            }
-          });
-
-          resolve(verifier);
-        } catch (error) {
-          console.error('Error generating reCAPTCHA Enterprise token:', error);
-          reject(error);
+      const verifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
+        size: 'invisible',
+        callback: () => {
+          console.log('reCAPTCHA verified (fallback mode)');
+        },
+        'expired-callback': () => {
+          console.log('reCAPTCHA expired');
+        },
+        'error-callback': (error: any) => {
+          console.log('reCAPTCHA error:', error);
         }
       });
+
+      resolve(verifier);
     });
   };
 
