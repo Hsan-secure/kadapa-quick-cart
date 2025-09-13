@@ -39,8 +39,6 @@ export function Footer() {
             <ul className="space-y-2 text-sm">
               <li><Link to="/about" className="text-muted-foreground hover:text-primary transition-colors">About Us</Link></li>
               <li><Link to="/faq" className="text-muted-foreground hover:text-primary transition-colors">FAQ</Link></li>
-              <li><Link to="/terms" className="text-muted-foreground hover:text-primary transition-colors">Terms & Conditions</Link></li>
-              <li><Link to="/privacy" className="text-muted-foreground hover:text-primary transition-colors">Privacy Policy</Link></li>
               <li><Link to="/refund" className="text-muted-foreground hover:text-primary transition-colors">Refund Policy</Link></li>
             </ul>
           </div>

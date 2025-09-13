@@ -62,19 +62,20 @@ serve(async (req) => {
       throw orderError;
     }
 
-    // Generate PhonePe payment URL (simulation)
-    const merchantId = "QUICKDELIVERY";
+    // Generate PhonePe UPI payment URL
     const merchantTransactionId = `TXN_${Date.now()}_${Math.random().toString(36).substr(2, 6)}`;
+    const upiId = "6302829644@ybl";
+    const merchantName = "Quick Delivery";
     
-    // In a real PhonePe implementation, you would:
-    // 1. Create the payment request payload
-    // 2. Base64 encode it
-    // 3. Generate checksum with salt + payload + salt
-    // 4. Make API call to PhonePe payment gateway
-    
-    // For now, we'll redirect to a simulated PhonePe page
+    // Create UPI payment URL that redirects to PhonePe
+    const amountInRupees = (amount / 100).toFixed(2);
     const redirectUrl = `${req.headers.get("origin")}/payment-callback?transactionId=${merchantTransactionId}&orderId=${orderId}`;
-    const phonepeUrl = `https://payments.phonepe.com/v1/debit?amount=${(amount/100).toFixed(2)}&currency=INR&merchantId=${merchantId}&transactionId=${merchantTransactionId}&redirectUrl=${encodeURIComponent(redirectUrl)}`;
+    
+    // Generate proper PhonePe UPI payment URL
+    const phonepeUrl = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(merchantName)}&am=${amountInRupees}&cu=INR&tn=${encodeURIComponent(`Order ${orderId}`)}&tr=${merchantTransactionId}`;
+    
+    // For web browsers, create a PhonePe payment page URL that handles the UPI redirect
+    const webPaymentUrl = `https://phonepe.com/pay?pa=${upiId}&pn=${encodeURIComponent(merchantName)}&am=${amountInRupees}&cu=INR&tn=${encodeURIComponent(`Order ${orderId}`)}`;
     
     
     // Create transaction record
@@ -95,7 +96,7 @@ serve(async (req) => {
     return new Response(
       JSON.stringify({
         success: true,
-        paymentUrl: phonepeUrl,
+        paymentUrl: webPaymentUrl,
         transactionId: merchantTransactionId,
         orderId: orderId
       }),
