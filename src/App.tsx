@@ -44,6 +44,7 @@ function AppContent() {
         <Route path="/payment-simulation" element={<PaymentSimulation />} />
         <Route path="/payment-callback" element={<PaymentCallback />} />
         <Route path="/live-tracking" element={<LiveTracking />} />
+        <Route path="/live-tracking/:orderId" element={<LiveTracking />} />
         <Route path="/order/:orderId" element={<OrderTracking />} />
         <Route path="/my-orders" element={<MyOrders />} />
         <Route path="/about" element={<About />} />
