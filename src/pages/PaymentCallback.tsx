@@ -5,10 +5,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Check, X, Loader2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
+import { useCart } from '@/context/CartContext';
 
 export default function PaymentCallback() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const { createOrder, getCartTotal } = useCart();
   const [status, setStatus] = useState<'checking' | 'success' | 'failed'>('checking');
   const [orderId, setOrderId] = useState<string>('');
 
@@ -101,22 +103,44 @@ export default function PaymentCallback() {
 
   const handleContinue = () => {
     if (status === 'success' && orderId) {
-      // Complete the order in cart context
+      // Create order if it doesn't exist
       const storedItems = sessionStorage.getItem('pendingCartItems');
       const storedAddress = sessionStorage.getItem('pendingAddress');
-      const storedTotal = sessionStorage.getItem('pendingTotal');
       
-      if (storedItems && storedAddress && storedTotal) {
+      if (storedItems && storedAddress) {
+        const items = JSON.parse(storedItems);
+        const address = JSON.parse(storedAddress);
+        const { subtotal, discount, deliveryFee, gst, total } = getCartTotal();
+        const etaMinutes = Math.floor(Math.random() * 15) + 20;
+        
+        createOrder({
+          items,
+          subtotal,
+          discount,
+          deliveryFee,
+          gst,
+          total,
+          address,
+          payment: {
+            method: 'PhonePe',
+            ref: orderId,
+          },
+          status: 'PLACED',
+          etaMinutes,
+        });
+        
         // Clear pending data
         sessionStorage.removeItem('pendingCartItems');
         sessionStorage.removeItem('pendingAddress');
         sessionStorage.removeItem('pendingTotal');
-        sessionStorage.removeItem('pendingOrderId');
-        sessionStorage.removeItem('pendingTransactionId');
+        sessionStorage.removeItem('selectedAddressId');
       }
       
-      // Redirect to live tracking instead of order page
-      navigate(`/live-tracking?orderId=${orderId}&status=success`);
+      sessionStorage.removeItem('pendingOrderId');
+      sessionStorage.removeItem('pendingTransactionId');
+      
+      // Redirect to live tracking
+      navigate(`/live-tracking?orderId=${orderId}`);
     } else {
       navigate('/cart');
     }

@@ -7,7 +7,7 @@ verify_jwt = false
 verify_jwt = false
 
 [functions.create-phonepe-payment]
-verify_jwt = true
+verify_jwt = false
 
 [functions.verify-phonepe-payment]
 verify_jwt = false

@@ -56,12 +56,14 @@ export default function CheckoutPayment() {
 
         if (error) throw error;
 
-        // Store transaction info for callback
+        // Store transaction info and cart data for callback
         sessionStorage.setItem('pendingOrderId', orderId);
         sessionStorage.setItem('pendingTransactionId', data.transactionId);
+        sessionStorage.setItem('pendingCartItems', JSON.stringify(state.items));
+        sessionStorage.setItem('pendingAddress', JSON.stringify(selectedAddress));
         
         toast({
-          title: "Redirecting to PhonePe...",
+          title: "Redirecting to Payment...",
           description: "You will be redirected to complete the payment",
         });
 
@@ -71,8 +73,38 @@ export default function CheckoutPayment() {
         }, 1000);
 
       } else {
-        // COD - direct order creation
-        completeOrder('COD');
+        // COD - create order and redirect to live tracking
+        const orderId = `QD-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
+        const etaMinutes = Math.floor(Math.random() * 15) + 20; // 20-35 minutes
+        
+        const order = createOrder({
+          items: state.items,
+          subtotal,
+          discount,
+          deliveryFee,
+          gst,
+          total,
+          address: selectedAddress,
+          payment: {
+            method: 'COD',
+            ref: orderId,
+          },
+          status: 'PLACED',
+          etaMinutes,
+        });
+
+        // Clear session storage
+        sessionStorage.removeItem('selectedAddressId');
+        sessionStorage.removeItem('pendingOrderId');
+        sessionStorage.removeItem('pendingTransactionId');
+        
+        toast({
+          title: "Order placed successfully!",
+          description: `Your order will be delivered in ${etaMinutes} minutes`,
+        });
+
+        // Redirect to live tracking
+        navigate(`/live-tracking/${order.id}`);
       }
     } catch (error: any) {
       console.error('Payment error:', error);
