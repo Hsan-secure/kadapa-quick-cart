@@ -17,6 +17,7 @@ import {
 import { toast } from 'sonner';
 import { CancelOrderModal } from '@/components/CancelOrderModal';
 import { RatingModal } from '@/components/RatingModal';
+import { DeliveryPartnerChat } from '@/components/DeliveryPartnerChat';
 import { useCart } from '@/context/CartContext';
 
 interface OrderStatus {
@@ -60,6 +61,7 @@ export function LiveTracking() {
   const [progress, setProgress] = useState(0);
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [showRatingModal, setShowRatingModal] = useState(false);
+  const [showPartnerChat, setShowPartnerChat] = useState(false);
   const [isCODOrder, setIsCODOrder] = useState(false);
 
   // Check if this is a COD order
@@ -133,20 +135,9 @@ export function LiveTracking() {
     return 'pending';
   };
 
-  const predefinedMessages = [
-    'Where is my order currently?',
-    'How much more time for delivery?',
-    'Can you call me when you reach?',
-    'I am not at home, please wait 5 minutes',
-    'Please ring the doorbell',
-    'Deliver to security guard',
-    'Call me before delivery'
-  ];
-
   const handleChatDeliveryPartner = () => {
     if (orderStatus.deliveryPartner) {
-      // Show predefined message options
-      toast.success(`Chat opened with ${orderStatus.deliveryPartner.name}. Select from quick messages or type your own.`);
+      setShowPartnerChat(true);
     }
   };
 
@@ -294,32 +285,14 @@ export function LiveTracking() {
                 </div>
               )}
 
-              <div className="space-y-3">
-                <Button 
-                  onClick={handleChatDeliveryPartner}
-                  className="w-full"
-                  variant="outline"
-                >
-                  <MessageCircle className="w-4 h-4 mr-2" />
-                  Chat with Delivery Partner
-                </Button>
-                
-                {/* Predefined Messages */}
-                <div className="bg-blue-50 p-3 rounded-lg">
-                  <p className="text-xs font-medium text-blue-800 mb-2">Quick Messages:</p>
-                  <div className="grid grid-cols-1 gap-1">
-                    {predefinedMessages.slice(0, 3).map((message) => (
-                      <button
-                        key={message}
-                        onClick={() => toast.success(`Message sent: "${message}"`)}
-                        className="text-xs text-left p-2 bg-white rounded border border-blue-200 hover:bg-blue-50 transition-colors"
-                      >
-                        {message}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </div>
+              <Button 
+                onClick={handleChatDeliveryPartner}
+                className="w-full"
+                variant="outline"
+              >
+                <MessageCircle className="w-4 h-4 mr-2" />
+                Chat with Delivery Partner
+              </Button>
             </CardContent>
           </Card>
         )}
@@ -382,6 +355,15 @@ export function LiveTracking() {
           orderId={orderId}
           onSubmit={handleRateOrder}
         />
+
+        {/* Delivery Partner Chat */}
+        {orderStatus.deliveryPartner && (
+          <DeliveryPartnerChat
+            isOpen={showPartnerChat}
+            onClose={() => setShowPartnerChat(false)}
+            partnerName={orderStatus.deliveryPartner.name}
+          />
+        )}
       </div>
     </div>
   );
